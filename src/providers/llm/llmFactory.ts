@@ -14,12 +14,12 @@ export class LLMFactory {
     }
 
     if (type === 'gemini' && geminiKey) {
-      return new GeminiLLMProvider(geminiKey, process.env.GEMINI_MODEL || 'gemini-3.5-flash');
+      return new GeminiLLMProvider(geminiKey, process.env.GEMINI_MODEL || 'gemini-1.5-flash');
     }
 
     if (type === 'auto') {
       if (geminiKey) {
-        return new GeminiLLMProvider(geminiKey, process.env.GEMINI_MODEL || 'gemini-3.5-flash');
+        return new GeminiLLMProvider(geminiKey, process.env.GEMINI_MODEL || 'gemini-1.5-flash');
       }
       if (openAIKey) {
         return new OpenAILLMProvider(openAIKey, process.env.OPENAI_MODEL || 'gpt-4o-mini');

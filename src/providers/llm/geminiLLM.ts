@@ -7,8 +7,8 @@ export class GeminiLLMProvider implements ILLMProvider {
   private model: string;
 
   constructor(apiKey: string, model: string = 'gemini-1.5-flash') {
-    this.apiKey = apiKey;
-    this.model = model;
+    this.apiKey = (apiKey || '').trim();
+    this.model = (model && !model.includes('3.5')) ? model.trim() : 'gemini-1.5-flash';
   }
 
   async generateScript(

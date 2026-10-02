@@ -42,7 +42,7 @@ export class FrameExtractor {
           '-i',
           videoPath,
           '-vf',
-          `fps=1/${intervalSeconds}`,
+          `fps=${(1 / intervalSeconds).toFixed(3)}`,
           '-q:v',
           '3',
           outputPattern,

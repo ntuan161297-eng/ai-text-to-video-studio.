@@ -1028,6 +1028,20 @@ export class MasterVideoEngine {
       }
     }
 
+    // Enforce Screen Economy on timeline scenes (concise headlines <= 6 words, supportingText <= 10 words)
+    for (const sc of timeline.scenes) {
+      const hWords = sc.headline.split(/\s+/).filter(Boolean);
+      if (hWords.length > 7) {
+        sc.headline = hWords.slice(0, 6).join(' ').toUpperCase();
+      }
+      if (sc.supportingText) {
+        const sWords = sc.supportingText.split(/\s+/).filter(Boolean);
+        if (sWords.length > 12) {
+          sc.supportingText = sWords.slice(0, 10).join(' ');
+        }
+      }
+    }
+
     // Pre-Render Quality Gate
     const preRenderCheck = PreRenderQualityGate.inspect({
       scriptPackage: approvedPackage,

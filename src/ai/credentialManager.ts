@@ -344,7 +344,8 @@ export class CredentialManager {
 
     try {
       if (provider === 'GEMINI') {
-        const testModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+        let testModel = (process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim();
+        if (testModel.includes('3.5')) testModel = 'gemini-1.5-flash';
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${testModel}:generateContent?key=${key}`;
         await axios.post(
           url,

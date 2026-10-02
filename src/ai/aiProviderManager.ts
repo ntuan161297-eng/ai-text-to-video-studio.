@@ -312,37 +312,62 @@ export class AIProviderManager {
     maxTokens?: number;
   }): Promise<string> {
     const { rawKey, systemPrompt, userPrompt, jsonMode, temperature, maxTokens } = params;
-    const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${rawKey}`;
-
-    const parts: any[] = [];
-    if (systemPrompt) {
-      parts.push({ text: `[System Instruction]:\n${systemPrompt}` });
-    }
-    parts.push({ text: userPrompt });
-
-    const payload: any = {
-      contents: [{ parts }],
-      generationConfig: {
-        temperature: temperature ?? 0.7,
-        maxOutputTokens: maxTokens ?? 4000,
-      },
-    };
-
-    if (jsonMode) {
-      payload.generationConfig.responseMimeType = 'application/json';
+    const cleanKey = (rawKey || '').trim();
+    let configuredModel = (process.env.GEMINI_MODEL || 'gemini-1.5-flash').trim();
+    if (configuredModel.includes('3.5')) {
+      configuredModel = 'gemini-1.5-flash';
     }
 
-    const res = await axios.post(url, payload, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 30000,
-    });
+    const candidateModels = [configuredModel, 'gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro'].filter(
+      (v, i, a) => a.indexOf(v) === i
+    );
 
-    const text = res.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) {
-      throw new Error('GEMINI_EMPTY_RESPONSE: Provider không trả về nội dung text');
+    let lastError: any = null;
+    for (const model of candidateModels) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${cleanKey}`;
+
+      const parts: any[] = [];
+      if (systemPrompt) {
+        parts.push({ text: `[System Instruction]:\n${systemPrompt}` });
+      }
+      parts.push({ text: userPrompt });
+
+      const payload: any = {
+        contents: [{ parts }],
+        generationConfig: {
+          temperature: temperature ?? 0.7,
+          maxOutputTokens: maxTokens ?? 4000,
+        },
+      };
+
+      if (jsonMode) {
+        payload.generationConfig.responseMimeType = 'application/json';
+      }
+
+      try {
+        const res = await axios.post(url, payload, {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 30000,
+        });
+
+        const text = res.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!text) {
+          throw new Error('GEMINI_EMPTY_RESPONSE: Provider không trả về nội dung text');
+        }
+        return text.trim();
+      } catch (err: any) {
+        lastError = err;
+        const status = err.response?.status;
+        if (status === 404 && model !== candidateModels[candidateModels.length - 1]) {
+          console.warn(`[AIProviderManager] Model "${model}" trả về 404. Đang tự động chuyển sang model thay thế...`);
+          continue;
+        }
+        const detailedMsg = err.response?.data?.error?.message || err.message;
+        throw new Error(`GEMINI_API_ERROR (${status || 'Network'}): ${detailedMsg}`);
+      }
     }
-    return text.trim();
+
+    throw lastError || new Error('GEMINI_CALL_FAILED');
   }
 
   private static async callOpenAI(params: {
@@ -354,7 +379,7 @@ export class AIProviderManager {
     maxTokens?: number;
   }): Promise<string> {
     const { rawKey, systemPrompt, userPrompt, jsonMode, temperature, maxTokens } = params;
-    const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+    const model = (process.env.OPENAI_MODEL || 'gpt-4o-mini').trim();
     const url = 'https://api.openai.com/v1/chat/completions';
 
     const messages: any[] = [];
@@ -374,19 +399,25 @@ export class AIProviderManager {
       payload.response_format = { type: 'json_object' };
     }
 
-    const res = await axios.post(url, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${rawKey}`,
-      },
-      timeout: 30000,
-    });
+    try {
+      const res = await axios.post(url, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${(rawKey || '').trim()}`,
+        },
+        timeout: 30000,
+      });
 
-    const text = res.data?.choices?.[0]?.message?.content;
-    if (!text) {
-      throw new Error('OPENAI_EMPTY_RESPONSE: Provider không trả về nội dung');
+      const text = res.data?.choices?.[0]?.message?.content;
+      if (!text) {
+        throw new Error('OPENAI_EMPTY_RESPONSE: Provider không trả về nội dung');
+      }
+      return text.trim();
+    } catch (err: any) {
+      const status = err.response?.status;
+      const detailedMsg = err.response?.data?.error?.message || err.message;
+      throw new Error(`OPENAI_API_ERROR (${status || 'Network'}): ${detailedMsg}`);
     }
-    return text.trim();
   }
 
   /**
