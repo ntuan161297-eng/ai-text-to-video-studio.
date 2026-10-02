@@ -17,7 +17,9 @@ DisableProgramGroupPage=yes
 OutputDir=output
 OutputBaseFilename=AI_Studio_Setup_v1.0
 SetupIconFile=app_icon.ico
-Compression=lzma2/ultra64
+Compression=lzma2/normal
+LZMAUseSeparateProcess=yes
+LZMADictionarySize=16384
 SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=lowest
@@ -31,31 +33,38 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "Tao bieu tuong tren man hinh Desktop"; GroupDescription: "Bieu tuong:"; Flags: checkablealone
 
 [Files]
-; File khoi dong va tat studio
+; 1. File khoi dong va tat studio
 Source: "..\Khoi_Dong_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Tat_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\tsconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+
+; 2. Cau hinh moi truong sach (CHỈ dùng .env.example, TUYỆT ĐỐI KHÔNG mang .env hoac data cua may local)
 Source: "..\.env.example"; DestDir: "{app}"; Flags: ignoreversion
 
-; Ma nguon backend va script
-Source: "..\src\*"; DestDir: "{app}\src"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs createallsubdirs
+; 3. Ma nguon backend
+Source: "..\src\*"; DestDir: "{app}\src"; Excludes: "*.map"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-; Giao dien Web (bo qua thu muc cache va trace de tranh bi lock boi dev server)
-Source: "..\web\*"; DestDir: "{app}\web"; Excludes: ".next\cache\*,.next\trace*,.next\trace,*.log"; Flags: ignoreversion recursesubdirs createallsubdirs
+; 4. Chi copy script TTS runtime (Khong copy file test/diagnose/benchmark de bao mat va giam dung luong)
+Source: "..\scripts\tts_runner.py"; DestDir: "{app}\scripts"; Flags: ignoreversion
 
-; Thu vien dependencies
-Source: "..\node_modules\*"; DestDir: "{app}\node_modules"; Flags: ignoreversion recursesubdirs createallsubdirs
+; 5. Giao dien Web (bo qua cache, trace, source maps de nhe hon va khoi dong nhanh)
+Source: "..\web\*"; DestDir: "{app}\web"; Excludes: ".next\cache\*,.next\trace*,.next\trace,*.log,*.map,*.ts.map,*.js.map,node_modules\.cache\*"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-; Node.js Portable Runtime
-Source: "runtime\*"; DestDir: "{app}\runtime"; Flags: ignoreversion recursesubdirs createallsubdirs
+; 6. Thu vien dependencies (loai bo sourcemap, cache remotion va cac goi ngon ngu chromium khong dung)
+Source: "..\node_modules\*"; DestDir: "{app}\node_modules"; Excludes: ".cache\*,*.map,*.ts.map,*.js.map,.remotion\chrome-headless-shell\win64\chrome-headless-shell-win64\locales\*,*.md,*.markdown"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+; 7. Node.js Portable Runtime (loai bo docs/map thua)
+Source: "runtime\*"; DestDir: "{app}\runtime"; Excludes: "*.map,*.md,docs\*,test\*"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Dirs]
+; Tao cac thu muc trong san cho may moi (Khong co bat ky video hay du lieu nao tu may cu)
+Name: "{app}\data"; Permissions: users-full
 Name: "{app}\output"; Permissions: users-full
 Name: "{app}\temp"; Permissions: users-full
+Name: "{app}\review"; Permissions: users-full
 
 [Icons]
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\app_icon.ico"; Tasks: desktopicon
