@@ -39,6 +39,7 @@ Name: "desktopicon"; Description: "Tạo biểu tượng trên màn hình Deskto
 ; 1. Script khoi dong va tat studio
 Source: "..\Khoi_Dong_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Tat_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Cap_Nhat_Tu_Git.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion
@@ -83,8 +84,8 @@ Filename: "{app}\{#MyAppExeName}"; Description: "Khởi động AI Text-to-Video
 Type: filesandordirs; Name: "{app}\temp"
 
 [Code]
-// Tu dong dung Studio neu dang chay truoc khi cai de tranh xung dot file
-function InitializeSetup(): Boolean;
+// Tu dong dung Studio neu dang chay truoc khi cai de tranh xung dot file (chay khi {app} da duoc khoi tao)
+function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   ResultCode: Integer;
 begin
@@ -92,7 +93,7 @@ begin
   begin
     Exec(ExpandConstant('{app}\Tat_Studio.bat'), '', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   end;
-  Result := True;
+  Result := '';
 end;
 
 // Tu dong dung Studio truoc khi go cai dat

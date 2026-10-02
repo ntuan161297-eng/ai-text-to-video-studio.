@@ -55,6 +55,13 @@ export class AIProviderManager {
   private static sessions: Map<string, ProviderSession> = new Map();
 
   /**
+   * Gets an active session for a job
+   */
+  public static getSession(jobId: string): ProviderSession | undefined {
+    return this.sessions.get(jobId);
+  }
+
+  /**
    * Initializes or retrieves an isolated ProviderSession pinned for a specific Job
    */
   public static async initSession(options: {
@@ -63,7 +70,7 @@ export class AIProviderManager {
     userId?: string;
     useUserBYOK?: boolean;
   }): Promise<ProviderSession> {
-    const { jobId, strategy = 'AUTO', userId, useUserBYOK = false } = options;
+    const { jobId, strategy = 'AUTO', userId, useUserBYOK = true } = options;
 
     if (this.sessions.has(jobId)) {
       return this.sessions.get(jobId)!;
@@ -140,6 +147,16 @@ export class AIProviderManager {
     };
 
     this.sessions.set(jobId, session);
+
+    // Dong bo khoa rawKey vao process.env de cac module he thong luon truy cap duoc
+    if (credential?.rawKey) {
+      if (credential.provider === 'GEMINI') {
+        process.env.GEMINI_API_KEY = credential.rawKey;
+      } else if (credential.provider === 'OPENAI') {
+        process.env.OPENAI_API_KEY = credential.rawKey;
+      }
+    }
+
     return session;
   }
 

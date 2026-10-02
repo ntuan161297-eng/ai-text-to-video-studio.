@@ -4,6 +4,7 @@ import { app } from './app.js';
 import { getDatabase } from '../database/db.js';
 import { getVideoQueue } from '../queue/videoQueue.js';
 import { startWorker } from '../worker/videoWorker.js';
+import { SecretStore } from '../ai/secretStore.js';
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
 
@@ -13,6 +14,27 @@ async function bootstrap() {
   // Khởi tạo Database
   const db = await getDatabase();
   await db.init();
+
+  // Tự động khôi phục khóa AI từ Database vào process.env
+  try {
+    const creds = await db.getAICredentials();
+    const readyGemini = creds.find((c) => c.provider === 'GEMINI' && c.status === 'READY');
+    if (readyGemini && (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY.trim().length === 0)) {
+      process.env.GEMINI_API_KEY = SecretStore.decrypt({
+        encryptedKey: readyGemini.encryptedKey,
+        iv: readyGemini.iv,
+        authTag: readyGemini.authTag,
+      });
+    }
+    const readyOpenAI = creds.find((c) => c.provider === 'OPENAI' && c.status === 'READY');
+    if (readyOpenAI && (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim().length === 0)) {
+      process.env.OPENAI_API_KEY = SecretStore.decrypt({
+        encryptedKey: readyOpenAI.encryptedKey,
+        iv: readyOpenAI.iv,
+        authTag: readyOpenAI.authTag,
+      });
+    }
+  } catch {}
 
   // Khởi tạo Queue
   await getVideoQueue();

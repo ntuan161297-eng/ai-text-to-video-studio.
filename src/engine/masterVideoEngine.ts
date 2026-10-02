@@ -187,7 +187,19 @@ export class MasterVideoEngine {
     dotenv.config({ override: true });
     const isTestOffline = process.env.TEST_OFFLINE_MODE === 'true';
     const isUsingAI = executionPlan ? executionPlan.stagesUsingAI.length > 0 : true;
+
+    // Kiem tra session tu AIProviderManager (BYOK hoac DB)
+    const session = AIProviderManager.getSession(jobId);
+    if (session?.activeCredential?.rawKey) {
+      if (session.activeCredential.provider === 'GEMINI') {
+        process.env.GEMINI_API_KEY = session.activeCredential.rawKey;
+      } else if (session.activeCredential.provider === 'OPENAI') {
+        process.env.OPENAI_API_KEY = session.activeCredential.rawKey;
+      }
+    }
+
     const hasLLMConfigured = Boolean(
+      (session?.activeCredential?.rawKey) ||
       (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim().length > 0) ||
       (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim().length > 0)
     );
