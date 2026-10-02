@@ -22,6 +22,7 @@ import { AdaptiveResearchPlanner } from '../brain/adaptiveResearchPlanner.js';
 import { AdaptiveContentPlanner } from '../brain/adaptiveContentPlanner.js';
 import { UniversalScriptWriter } from '../brain/universalScriptWriter.js';
 import { UniversalScriptReviewer } from '../brain/universalScriptReviewer.js';
+import { AIProviderManager } from '../ai/aiProviderManager.js';
 import { DurationReconciliationLoop } from '../production/durationReconciliationLoop.js';
 import { ResearchQueryPlanner } from '../brain/researchQueryPlanner.js';
 import { CleanContentExtractor } from '../brain/cleanContentExtractor.js';

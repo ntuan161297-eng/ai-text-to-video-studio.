@@ -3,6 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execFile } from 'child_process';
 import { promisify } from 'util';
+// @ts-ignore
 import WebSocket from 'ws';
 import { parseFile } from 'music-metadata';
 import { ITTSProvider } from '../../types/index.js';
@@ -142,12 +143,12 @@ export class EdgeTTSProvider implements ITTSProvider {
         }
       });
 
-      ws.on('error', (err) => {
+      ws.on('error', (err: any) => {
         clearTimeout(timeout);
         reject(err);
       });
 
-      ws.on('close', (code, reason) => {
+      ws.on('close', (code: any, reason: any) => {
         clearTimeout(timeout);
         if (chunks.length > 0) resolve();
         else reject(new Error(`WebSocket closed early with code ${code}: ${reason}`));
