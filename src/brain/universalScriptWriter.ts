@@ -75,30 +75,43 @@ ${knowledge.strongestFacts.map((f, i) => `${i + 1}. ${f.claim}`).join('\n')}
 KẾ HOẠCH BỐ CỤC:
 ${contentPlan.sections.map((s) => `- Đoạn ${s.sectionIndex} (${s.targetSeconds}s, khoảng ${Math.round(s.targetSeconds * 4.2)} từ): ${s.purpose}`).join('\n')}`;
 
+    // 8. Ràng buộc chống lặp lại nội dung
+    const antiRepetitionRule = `8. TUYỆT ĐỐI KHÔNG LẶP LẠI: Mỗi phân cảnh phải khai thác một góc nhìn, diễn biến hoặc khía cạnh hoàn toàn khác biệt. Nghiêm cấm lặp lại câu từ, ý tưởng hoặc tiêu đề giữa các phân cảnh.`;
+
+    const systemPromptWithRule = `${systemPrompt}\n${antiRepetitionRule}`;
+
     try {
       const responseText = await AIProviderManager.executePrompt(
         {
           jobId,
-          systemPrompt,
+          systemPrompt: systemPromptWithRule,
           userPrompt,
           jsonMode: true,
-          temperature: 0.5,
+          temperature: 0.6,
         },
         'script_writing'
       );
 
       const parsed = JSON.parse(responseText);
       if (parsed.beats && Array.isArray(parsed.beats)) {
-        beats = parsed.beats.map((b: any, idx: number) => ({
-          beatId: idx + 1,
-          purpose: b.purpose || `Đoạn ${idx + 1}`,
-          narration: b.narration,
-          displayHeadline: (b.displayHeadline || topicContract.coreTopic).toUpperCase(),
-          expectedEntities: [topicContract.coreTopic],
-          targetDurationSec: b.targetDurationSec || Math.round(intentSpec.requestedDurationSeconds / parsed.beats.length),
-          factIds: [],
-          fidelityCategory: 'CORE',
-        }));
+        const seenBeats = new Set<string>();
+        beats = parsed.beats
+          .filter((b: any) => {
+            const norm = (b.narration || '').trim().toLowerCase();
+            if (!norm || seenBeats.has(norm)) return false;
+            seenBeats.add(norm);
+            return true;
+          })
+          .map((b: any, idx: number) => ({
+            beatId: idx + 1,
+            purpose: b.purpose || `Đoạn ${idx + 1}`,
+            narration: b.narration,
+            displayHeadline: (b.displayHeadline || topicContract.coreTopic).toUpperCase(),
+            expectedEntities: [topicContract.coreTopic],
+            targetDurationSec: b.targetDurationSec || Math.round(intentSpec.requestedDurationSeconds / parsed.beats.length),
+            factIds: [],
+            fidelityCategory: 'CORE',
+          }));
       }
     } catch (err: any) {
       console.warn(`[UniversalScriptWriter] AI Provider generation encountered issue (${err.message}). Tự động kích hoạt Adaptive Semantic Fact-Grounder từ các dữ liệu xác thực.`);
@@ -137,7 +150,7 @@ ${contentPlan.sections.map((s) => `- Đoạn ${s.sectionIndex} (${s.targetSecond
   }
 
   /**
-   * Offline Fact-Grounder for TEST_OFFLINE_MODE only.
+   * Adaptive Fact-Grounder với cơ chế chống trùng lặp tuyệt đối (Zero Content Repetition)
    */
   private static generateAdaptiveSemanticBeats(
     intentSpec: UserIntentSpec,
@@ -148,28 +161,86 @@ ${contentPlan.sections.map((s) => `- Đoạn ${s.sectionIndex} (${s.targetSecond
     const beats: ScriptBeat[] = [];
     const subject = topicContract.coreTopic;
 
+    // 1. Tập hợp TOÀN BỘ dữ kiện độc nhất từ nghiên cứu thực tế
+    const uniqueFacts: { id: string; claim: string; isSensitiveNumber?: boolean }[] = [];
+    const seenClaims = new Set<string>();
+
+    const registerFact = (claim?: string, id?: string, isSensitiveNumber?: boolean) => {
+      if (!claim) return;
+      const clean = claim.replace(/\s+/g, ' ').trim();
+      const key = clean.toLowerCase();
+      if (clean.length >= 15 && !seenClaims.has(key)) {
+        seenClaims.add(key);
+        uniqueFacts.push({ id: id || `fact_${uniqueFacts.length + 1}`, claim: clean, isSensitiveNumber });
+      }
+    };
+
+    // Đưa tất cả các loại facts vào pool
+    (knowledge.strongestFacts || []).forEach((f, i) => registerFact(f.claim, f.id, f.isSensitiveNumber));
+    (knowledge.supportingFacts || []).forEach((f, i) => registerFact(f.claim, f.id, f.isSensitiveNumber));
+    (knowledge.nuances || []).forEach((n, i) => registerFact(n, `nuance_${i + 1}`));
+
+    // 2. Kịch bản phát triển theo từng giai đoạn không trùng lặp (Narrative Progression Templates)
+    const stagePerspectives = [
+      (claim: string) => claim ? `${subject}: ${claim}` : `Khám phá ngay ${subject}, tâm điểm thu hút sự chú ý đặc biệt thời gian gần đây với nhiều diễn biến bất ngờ.`,
+      (claim: string) => claim ? `Về bối cảnh và nguồn gốc: ${claim}` : `Để hiểu rõ bức tranh toàn cảnh, cần nhìn nhận các yếu tố nền tảng và bước khởi đầu tạo nên ${subject}.`,
+      (claim: string) => claim ? `Điểm mấu chốt đáng chú ý nhất là: ${claim}` : `Điểm then chốt nằm ở những thay đổi mang tính đột phá, tác động trực tiếp đến toàn bộ cục diện.`,
+      (claim: string) => claim ? `Phân tích chiều sâu cho thấy: ${claim}` : `Nhiều chuyên gia nhận định đây là bước ngoặt quan trọng, mở ra cả cơ hội lẫn thách thức phía trước.`,
+      (claim: string) => claim ? `Đánh giá từ cộng đồng và thực tế: ${claim}` : `Dư luận và giới chuyên môn đang theo dõi sát sao từng động thái tiếp theo với nhiều kỳ vọng lớn.`,
+      (claim: string) => claim ? `Một chi tiết thú vị khác: ${claim}` : `Bên cạnh đó, còn rất nhiều góc nhìn đa chiều và bài học giá trị được rút ra từ diễn biến này.`,
+    ];
+
+    const defaultHeadlines = [
+      'TIÊU ĐIỂM CHÍNH',
+      'BỐI CẢNH NỀN TẢNG',
+      'ĐIỂM THEN CHỐT',
+      'PHÂN TÍCH CHIỀU SÂU',
+      'TÁC ĐỘNG THỰC TẾ',
+      'GÓC NHÌN CHUYÊN GIA',
+      'TỔNG KẾT & KÊU GỌI',
+    ];
+
+    const usedHeadlines = new Set<string>();
+
     contentPlan.sections.forEach((section, idx) => {
-      const fact = knowledge.strongestFacts[idx] || knowledge.strongestFacts[0];
+      const isFirst = idx === 0;
+      const isLast = idx === contentPlan.sections.length - 1;
+
+      // Lấy fact theo thứ tự chưa dùng, nếu hết facts thì dùng claim rỗng để template sinh câu tự nhiên
+      const fact = uniqueFacts[idx] || null;
+
       let narration = '';
       let headline = '';
 
-      if (idx === 0) {
-        headline = this.extractHeadlineFromFact(subject, 'TIÊU ĐIỂM CHÍNH');
-        narration = fact?.claim ? `${subject}: ${fact.claim}` : `${subject} đang là tâm điểm chú ý hiện nay.`;
-      } else if (idx === contentPlan.sections.length - 1) {
+      if (isLast) {
         headline = 'TỔNG KẾT & KÊU GỌI';
-        const ctaSuffix = ' Hãy lưu lại video, để lại bình luận chia sẻ cảm nhận của bạn và ấn theo dõi kênh để đón xem những nội dung hấp dẫn tiếp theo nhé!';
-        narration = fact?.claim ? `${fact.claim} ${ctaSuffix}` : `Đó là những thông tin quan trọng nhất về ${subject}. ${ctaSuffix}`;
+        const ctaSuffix = 'Nếu bạn thấy video hữu ích, hãy lưu lại, để lại bình luận chia sẻ cảm nhận của bạn và ấn theo dõi kênh để đón xem những nội dung hấp dẫn tiếp theo nhé!';
+        narration = fact
+          ? `Tóm lại: ${fact.claim}. ${ctaSuffix}`
+          : `Đó là những thông tin then chốt và toàn cảnh nhất về ${subject}. ${ctaSuffix}`;
       } else {
-        headline = fact ? this.extractHeadlineFromFact(fact.claim, subject) : `CHI TIẾT ${idx + 1}`;
-        narration = fact?.claim || `${subject} tiếp tục ghi nhận các diễn biến đáng chú ý.`;
+        const perspectiveFn = stagePerspectives[idx % stagePerspectives.length];
+        narration = perspectiveFn(fact ? fact.claim : '');
+
+        if (fact) {
+          const extracted = this.extractHeadlineFromFact(fact.claim, defaultHeadlines[idx] || 'ĐIỂM NHẤN');
+          if (!usedHeadlines.has(extracted)) {
+            headline = extracted;
+          } else {
+            headline = defaultHeadlines[idx] || `CHI TIẾT ${idx + 1}`;
+          }
+        } else {
+          headline = defaultHeadlines[idx] || `PHÂN CẢNH ${idx + 1}`;
+        }
       }
+
+      usedHeadlines.add(headline);
 
       beats.push({
         beatId: section.sectionIndex,
         purpose: section.purpose,
         narration: narration.trim(),
-        displayHeadline: headline,
+        displayHeadline: headline.toUpperCase(),
         supportingText: fact?.isSensitiveNumber ? 'Số liệu xác thực' : undefined,
         metricBadge: fact?.isSensitiveNumber && knowledge.meaningfulNumbers[idx] ? knowledge.meaningfulNumbers[idx] : undefined,
         expectedEntities: [subject, ...topicContract.requiredEntities],

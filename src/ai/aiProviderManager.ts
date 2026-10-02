@@ -288,15 +288,16 @@ export class AIProviderManager {
         }
       } catch (err: any) {
         const status = err.response?.status;
-        const isTransient = !status || status >= 500 || status === 408;
+        const isTransient = !status || status >= 500 || status === 408 || status === 429;
 
         // If permanent error (401, 403, invalid key) -> DO NOT RETRY
         if (!isTransient || attempt >= maxAttempts) {
           throw err;
         }
 
-        console.warn(`[AIProviderManager] Transient error (${status || 'Network'}). Bounded retry ${attempt}/${maxAttempts}...`);
-        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+        const waitTime = status === 429 ? 2500 * attempt : 1000 * attempt;
+        console.warn(`[AIProviderManager] Tạm thời gặp lỗi (${status || 'Network'}). Tự động thử lại sau ${waitTime}ms (lần ${attempt}/${maxAttempts})...`);
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
       }
     }
 
@@ -358,10 +359,14 @@ export class AIProviderManager {
       } catch (err: any) {
         lastError = err;
         const status = err.response?.status;
-        if (status === 404 && model !== candidateModels[candidateModels.length - 1]) {
-          console.warn(`[AIProviderManager] Model "${model}" trả về 404. Đang tự động chuyển sang model thay thế...`);
+        const isLastModel = model === candidateModels[candidateModels.length - 1];
+
+        if ((status === 404 || status === 429) && !isLastModel) {
+          console.warn(`[AIProviderManager] Model "${model}" trả về mã lỗi ${status} (${status === 429 ? 'Vượt hạn mức/Rate limit' : 'Không tìm thấy model'}). Tự động chuyển sang model thay thế...`);
+          await new Promise((r) => setTimeout(r, 1200));
           continue;
         }
+
         const detailedMsg = err.response?.data?.error?.message || err.message;
         throw new Error(`GEMINI_API_ERROR (${status || 'Network'}): ${detailedMsg}`);
       }
