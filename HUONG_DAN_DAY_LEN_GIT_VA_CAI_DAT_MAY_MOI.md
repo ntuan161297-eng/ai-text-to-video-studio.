@@ -1,14 +1,43 @@
-# 🚀 HƯỚNG DẪN ĐƯA CODE LÊN GIT & TRIỂN KHAI CHO MÁY MỚI (A - Z)
+# 🚀 HƯỚNG DẪN TRIỂN KHAI & PHÁT HÀNH AI TEXT-TO-VIDEO STUDIO
 
-Tài liệu này hướng dẫn chi tiết từng bước:
-1. **Phần 1: Cách đưa code từ máy của bạn lên GitHub / GitLab** (Máy chủ tác giả).
-2. **Phần 2: Cách tải và cài đặt 1-Click trên máy tính khác** (Máy người dùng thử nghiệm).
-3. **Phần 3: Cách người dùng mới cấu hình Google Gemini API Key miễn phí 100% (0đ)**.
-4. **Phần 4: Cơ chế tự động cập nhật khi bạn phát hành bản sửa lỗi mới**.
+Tài liệu này bao gồm 2 phương án triển khai:
+- **🌟 PHƯƠNG ÁN 1 (KHUYÊN DÙNG): Đóng gói thành file cài đặt Windows `.EXE` trọn gói (Người nhận không cần cài thêm bất cứ thứ gì, kể cả Node.js hay Git).**
+- **💻 PHƯƠNG ÁN 2: Dành cho lập trình viên (Đẩy code lên GitHub và clone về máy mới bằng lệnh).**
 
 ---
 
-## 📌 PHẦN 1: ĐƯA TOÀN BỘ CODE TỪ MÁY BẠN LÊN GITHUB
+## 🌟 PHƯƠNG ÁN 1: BỘ CÀI ĐẶT WINDOWS (.EXE) TRỌN GÓI "1-CLICK"
+
+### 1. File cài đặt nằm ở đâu?
+File cài đặt hoàn chỉnh đã được đóng gói sẵn tại:
+📁 **`installer\output\AI_Studio_Setup_v1.0.exe`** (Dung lượng ~200MB)
+
+> **Điểm đặc biệt của file .EXE này:**
+> - ✅ Tích hợp sẵn **Node.js Portable (v20)** bên trong.
+> - ✅ Tích hợp sẵn **Toàn bộ thư viện dependencies** và **Bản build Web UI**.
+> - ✅ Tích hợp sẵn **Chrome Headless** để render video chất lượng cao.
+> - ❌ **Người dùng máy mới KHÔNG CẦN cài Node.js, KHÔNG CẦN cài Git, KHÔNG CẦN gõ bất kỳ dòng lệnh nào!**
+
+---
+
+### 2. Người dùng máy mới cài đặt thế nào?
+1. Bạn gửi file `AI_Studio_Setup_v1.0.exe` cho người dùng (qua Google Drive, OneDrive, Zalo hoặc chép USB).
+2. Người nhận nhấp đúp vào file `AI_Studio_Setup_v1.0.exe`.
+3. Bấm **Tiếp tục (Next)** -> **Cài đặt (Install)**.
+4. Màn hình Desktop sẽ tự động xuất hiện biểu tượng: **"AI Text to Video Studio"**.
+5. Nhấp đúp biểu tượng ngoài màn hình: Trình duyệt sẽ tự động mở `http://localhost:3000` và sẵn sàng sử dụng ngay lập tức!
+6. Khi muốn tắt ứng dụng: Vào Start Menu -> chọn **"Dừng Studio (Tat Studio)"**.
+
+---
+
+### 3. Khi bạn sửa code hoặc cập nhật tính năng mới, làm sao tạo lại file .EXE mới?
+Bạn chỉ cần nhấp đúp vào file kịch bản tự động:
+👉 **`Tao_Bo_Cai_Exe.bat`** (ngay thư mục gốc của dự án)
+Hệ thống sẽ tự động quét bản cập nhật mới nhất, nén lại và xuất ra file `.exe` mới trong `installer\output\` chỉ sau 1-2 phút!
+
+---
+
+## 📌 PHƯƠNG ÁN 2: TRIỂN KHAI QUA GITHUB (CHO LẬP TRÌNH VIÊN)
 
 ### Bước 1.1: Cài đặt Git trên máy tính của bạn (Nếu chưa có)
 1. Tải bản cài đặt Git chính thức cho Windows tại: [https://git-scm.com/download/win](https://git-scm.com/download/win) (Bấm chọn **64-bit Git for Windows Setup**).
