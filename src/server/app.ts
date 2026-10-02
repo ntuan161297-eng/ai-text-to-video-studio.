@@ -57,6 +57,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/videos', videoRouter);
 app.use('/api/admin/ai', adminAiRouter);
 app.use('/api/user/ai', userAiRouter);
+app.use('/api/system', systemRouter);
 
 // Điều hướng thân thiện khi người dùng mở nhầm http://localhost:4000 thay vì http://localhost:3000
 app.get('/', (req: Request, res: Response) => {
