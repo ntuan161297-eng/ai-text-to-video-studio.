@@ -59,58 +59,59 @@ systemRouter.post('/update', async (req: Request, res: Response) => {
   try {
     console.log('🔄 [SystemUpdate] Nhận lệnh cập nhật từ người dùng qua Web UI...');
 
-    // Kiểm tra xem thư mục có phải là Git repository không
-    if (!fs.existsSync(path.resolve('.git'))) {
-      return res.status(200).json({
-        success: false,
-        message: 'Bạn đang sử dụng Bản cài đặt đóng gói (.EXE) hoạt động độc lập không kèm Git. Khi có bản cập nhật mới, bạn chỉ cần tải và cài đè file AI_Studio_Setup_v1.0.exe mới lên máy là xong.',
-        error: 'Standalone installation does not use Git.',
-      });
-    }
-
-    // 1. Kiểm tra môi trường Git
+    // 1. Kiểm tra máy có cài Git không
     try {
       await execAsync('git --version', { timeout: 4000 });
     } catch {
       return res.status(200).json({
         success: false,
-        message: 'Máy tính này chưa cài Git. Nếu muốn dùng tính năng tự động kéo code từ Git, vui lòng cài đặt Git for Windows tại git-scm.com.',
+        message: 'Máy tính này chưa cài đặt Git. Để dùng tính năng tự động kéo code từ GitHub, bạn chỉ cần tải Git tại: https://git-scm.com/download/win (chọn 64-bit Git for Windows Setup và bấm Next liên tục).',
         error: 'Git is not installed.',
       });
     }
 
-    // 2. Chạy git pull
-    console.log('📥 [SystemUpdate] Đang kéo code mới nhất (git pull)...');
-    const pullResult = await execAsync('git pull origin main', { timeout: 30000 });
-    const pullOutput = (pullResult.stdout || pullResult.stderr || '').trim();
-    console.log(`[SystemUpdate] Git pull: ${pullOutput}`);
+    let pullOutput = '';
+
+    // 2. Nếu thư mục chưa có .git (bản cài .EXE), tự động khởi tạo kết nối tới GitHub
+    if (!fs.existsSync(path.resolve('.git'))) {
+      console.log('🔄 [SystemUpdate] Chưa có .git, đang tự động kết nối với repo GitHub...');
+      await execAsync('git init', { timeout: 10000 });
+      await execAsync('git remote add origin https://github.com/ntuan161297-eng/ai-text-to-video-studio..git', { timeout: 10000 });
+      await execAsync('git fetch origin main', { timeout: 60000 });
+      const resetRes = await execAsync('git reset --hard origin/main', { timeout: 30000 });
+      pullOutput = (resetRes.stdout || resetRes.stderr || 'Đã đồng bộ thành công từ nhánh main.').trim();
+    } else {
+      // 3. Nếu đã có .git, chạy git pull
+      console.log('📥 [SystemUpdate] Đang kéo code mới nhất (git pull origin main)...');
+      const pullResult = await execAsync('git pull origin main', { timeout: 45000 });
+      pullOutput = (pullResult.stdout || pullResult.stderr || '').trim();
+    }
+
+    console.log(`[SystemUpdate] Kết quả Git: ${pullOutput}`);
 
     const isAlreadyUpToDate = pullOutput.includes('Already up to date') || pullOutput.includes('đã cập nhật');
 
-    // 3. Nếu có cập nhật, chạy npm install và build lại frontend ngầm
+    // 4. Nếu có cập nhật mới, build lại web frontend ngầm
     if (!isAlreadyUpToDate) {
-      console.log('📦 [SystemUpdate] Đang cài đặt gói phụ thuộc mới...');
-      exec('npm install', { timeout: 60000 }, (instErr) => {
-        if (instErr) console.warn('[SystemUpdate] npm install warning:', instErr.message);
-        console.log('🔨 [SystemUpdate] Đang build lại giao diện Web...');
-        exec('npm run build', { cwd: path.resolve('web'), timeout: 120000 }, (buildErr) => {
-          if (buildErr) console.warn('[SystemUpdate] web build warning:', buildErr.message);
-          console.log('✅ [SystemUpdate] Quá trình cập nhật hoàn tất!');
-        });
+      console.log('📦 [SystemUpdate] Đang build lại giao diện Web...');
+      exec('npm run build', { cwd: path.resolve('web'), timeout: 180000 }, (buildErr) => {
+        if (buildErr) console.warn('[SystemUpdate] web build warning:', buildErr.message);
+        console.log('✅ [SystemUpdate] Quá trình cập nhật hoàn tất!');
       });
     }
 
     return res.json({
       success: true,
-      message: isAlreadyUpToDate ? 'Hệ thống đã ở phiên bản mới nhất!' : 'Đã tải bản cập nhật thành công! Hệ thống đang cập nhật tài nguyên...',
+      message: isAlreadyUpToDate ? 'Hệ thống đã ở phiên bản mới nhất từ Git!' : 'Đã tải bản cập nhật mới nhất từ GitHub thành công!',
       output: pullOutput,
       updated: !isAlreadyUpToDate,
     });
   } catch (error: any) {
     console.error('❌ [SystemUpdate] Lỗi khi cập nhật:', error.message);
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
-      error: `Lỗi cập nhật: ${error.message}. Bạn có thể chạy file Cap_Nhat_Code.bat để cập nhật bằng tay.`,
+      message: `Lỗi cập nhật: ${error.message}`,
+      error: error.message,
     });
   }
 });
