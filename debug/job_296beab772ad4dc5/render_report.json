@@ -1,0 +1,16 @@
+{
+  "outputPath": "C:\\Users\\Admin\\.gemini\\antigravity-ide\\scratch\\ai-text-to-video\\output\\video_vid_275168c9623c4213_1790698772703.mp4",
+  "duration": 30,
+  "fileSizeBytes": 28336139,
+  "qaReport": {
+    "passed": true,
+    "durationSeconds": 30,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "hasVideoStream": true,
+    "hasAudioStream": true,
+    "fileSizeBytes": 28336139,
+    "errors": []
+  }
+}

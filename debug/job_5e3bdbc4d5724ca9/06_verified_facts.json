@@ -1,0 +1,47 @@
+[
+  {
+    "claim": "Scud là lớp các tên lửa đạn đạo chiến thuật được Liên Xô triển khai trong thời kỳ Chiến tranh Lạnh và xuất khẩu rộng ...",
+    "evidence": "Scud là lớp các tên lửa đạn đạo chiến thuật được Liên Xô triển khai trong thời kỳ Chiến tranh Lạnh và xuất khẩu rộng rãi tới nhiều nước khác trên thế giới.",
+    "sourceUrl": "https://vi.wikipedia.org/wiki/Scud_(t%C3%AAn_l%E1%BB%ADa)",
+    "sourceName": "Wikipedia Tiếng Việt",
+    "confidence": 100,
+    "relevance": 90,
+    "category": "statistics"
+  },
+  {
+    "claim": "Thuật ngữ này xuất phát từ tên hiệu NATO SS-1 Scud vốn được các cơ quan tình báo phương Tây gán cho loại tên lửa này.",
+    "evidence": "Thuật ngữ này xuất phát từ tên hiệu NATO SS-1 Scud vốn được các cơ quan tình báo phương Tây gán cho loại tên lửa này.",
+    "sourceUrl": "https://vi.wikipedia.org/wiki/Scud_(t%C3%AAn_l%E1%BB%ADa)",
+    "sourceName": "Wikipedia Tiếng Việt",
+    "confidence": 95,
+    "relevance": 90,
+    "category": "general"
+  },
+  {
+    "claim": "Những tên tiếng Nga của nó là R-11 và R-17 Elbrus.",
+    "evidence": "Những tên tiếng Nga của nó là R-11 và R-17 Elbrus.",
+    "sourceUrl": "https://vi.wikipedia.org/wiki/Scud_(t%C3%AAn_l%E1%BB%ADa)",
+    "sourceName": "Wikipedia Tiếng Việt",
+    "confidence": 95,
+    "relevance": 90,
+    "category": "general"
+  },
+  {
+    "claim": "Cái tên Scud đã được các phương tiện truyền thông và nhiều thực thể khác dùng để chỉ không chỉ những tên lửa này mà c...",
+    "evidence": "Cái tên Scud đã được các phương tiện truyền thông và nhiều thực thể khác dùng để chỉ không chỉ những tên lửa này mà cả nhiều loại tên lửa khác được phát triển tại các quốc gia khác dựa trên thiết kế của người Liên Xô.",
+    "sourceUrl": "https://vi.wikipedia.org/wiki/Scud_(t%C3%AAn_l%E1%BB%ADa)",
+    "sourceName": "Wikipedia Tiếng Việt",
+    "confidence": 95,
+    "relevance": 90,
+    "category": "general"
+  },
+  {
+    "claim": "Thỉnh thoảng trên các phương tiện truyền thông đại chúng Hoa Kỳ, Scud được dùng để gọi tên lửa đạn đạo của bất kỳ một...",
+    "evidence": "Thỉnh thoảng trên các phương tiện truyền thông đại chúng Hoa Kỳ, Scud được dùng để gọi tên lửa đạn đạo của bất kỳ một quốc gia nào không phải phương Tây.",
+    "sourceUrl": "https://vi.wikipedia.org/wiki/Scud_(t%C3%AAn_l%E1%BB%ADa)",
+    "sourceName": "Wikipedia Tiếng Việt",
+    "confidence": 95,
+    "relevance": 90,
+    "category": "general"
+  }
+]

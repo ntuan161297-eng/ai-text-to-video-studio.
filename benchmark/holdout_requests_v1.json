@@ -1,0 +1,134 @@
+[
+  {
+    "id": "holdout_01_gioi_thieu",
+    "communicationGoal": "Giới thiệu",
+    "subjectType": "Doanh nghiệp / Y sinh",
+    "informationMode": "Factual / Evergreen",
+    "inputType": "Prompt chi tiết",
+    "duration": 50,
+    "tone": "Chuyên nghiệp, tin cậy",
+    "prompt": "Giới thiệu Viện nghiên cứu Tế bào gốc và Công nghệ gen Vinmec: Mục tiêu giải mã hệ gen người Việt và ứng dụng liệu pháp tế bào miễn dịch CAR-T điều trị ung thư máu",
+    "expectedEntities": ["Vinmec", "Tế bào gốc", "CAR-T", "hệ gen người Việt"]
+  },
+  {
+    "id": "holdout_02_kham_pha",
+    "communicationGoal": "Khám phá",
+    "subjectType": "Địa điểm / Thiên nhiên",
+    "informationMode": "Experiential / Evergreen",
+    "inputType": "Prompt giàu hình ảnh",
+    "duration": 65,
+    "tone": "Hùng vĩ, kỳ ảo",
+    "prompt": "Khám phá hố sụt tự nhiên 'Vườn Địa Đàng' (Garden of Edam) nằm sâu bên trong hang Sơn Đoòng với thảm thực vật nhiệt đới độc nhất vô nhị dưới lòng đất",
+    "expectedEntities": ["Sơn Đoòng", "Garden of Edam", "hố sụt", "thảm thực vật"]
+  },
+  {
+    "id": "holdout_03_giai_thich",
+    "communicationGoal": "Giải thích",
+    "subjectType": "Kiến thức / Khoa học",
+    "informationMode": "Analytical / Evergreen",
+    "inputType": "Prompt ngắn",
+    "duration": 42,
+    "tone": "Lôi cuốn, sáng sủa",
+    "prompt": "Giải thích hiệu ứng cánh bướm trong Thuyết hỗn loạn: Một cú đập cánh ở Brazil có thể tạo ra cơn lốc xoáy ở Texas như thế nào?",
+    "expectedEntities": ["hiệu ứng cánh bướm", "thuyết hỗn loạn", "Edward Lorenz"]
+  },
+  {
+    "id": "holdout_04_review",
+    "communicationGoal": "Đánh giá / Review",
+    "subjectType": "Sản phẩm / Công nghệ",
+    "informationMode": "Experiential / Practical",
+    "inputType": "Prompt kèm bối cảnh thực tế",
+    "duration": 55,
+    "tone": "Khách quan, tinh tế",
+    "prompt": "Đánh giá máy ảnh Fujifilm X-T5 qua góc nhìn nhiếp ảnh đường phố: Độ phân giải 40MP, chống rung thân máy IBIS và giả lập màu phim cổ điển",
+    "expectedEntities": ["Fujifilm X-T5", "IBIS", "nhiếp ảnh đường phố", "giả lập màu phim"]
+  },
+  {
+    "id": "holdout_05_so_sanh",
+    "communicationGoal": "So sánh",
+    "subjectType": "Sản phẩm / Kỹ thuật",
+    "informationMode": "Analytical / Factual",
+    "inputType": "Prompt có ràng buộc kỹ thuật",
+    "duration": 48,
+    "tone": "Phân tích, rành mạch",
+    "prompt": "So sánh hai dòng pin xe điện phổ biến hiện nay: Pin LFP bền bỉ chống cháy nổ và Pin NMC mật độ năng lượng cao cho quãng đường xa",
+    "expectedEntities": ["Pin LFP", "Pin NMC", "xe điện", "mật độ năng lượng"]
+  },
+  {
+    "id": "holdout_06_huong_dan",
+    "communicationGoal": "Hướng dẫn",
+    "subjectType": "Quy trình / Kỹ năng sinh tồn",
+    "informationMode": "Instructional / Practical",
+    "inputType": "Prompt từng bước",
+    "duration": 38,
+    "tone": "Bình tĩnh, quyết đoán",
+    "prompt": "Hướng dẫn phương pháp sinh tồn tìm và lọc nước uống an toàn trong rừng nhiệt đới bằng thân cây chuối rừng và than củi tự chế",
+    "expectedEntities": ["lọc nước sinh tồn", "rừng nhiệt đới", "chuối rừng", "than củi"]
+  },
+  {
+    "id": "holdout_07_ke_chuyen",
+    "communicationGoal": "Kể chuyện",
+    "subjectType": "Lịch sử / Nhân vật",
+    "informationMode": "Narrative / Documentary",
+    "inputType": "Prompt tự sự",
+    "duration": 72,
+    "tone": "Trầm lắng, bi tráng",
+    "prompt": "Bi kịch cuộc đua tới Nam Cực năm 1912: Hành trình kiệt cùng của đoàn thám hiểm Robert Falcon Scott trước sự khắc nghiệt của băng tuyết",
+    "expectedEntities": ["Robert Falcon Scott", "Nam Cực", "1912", "đoàn thám hiểm"]
+  },
+  {
+    "id": "holdout_08_phan_tich",
+    "communicationGoal": "Phân tích",
+    "subjectType": "Kinh tế / Quản trị",
+    "informationMode": "Analytical / Case study",
+    "inputType": "Prompt học thuật",
+    "duration": 58,
+    "tone": "Sâu sắc, sắc bén",
+    "prompt": "Phân tích mô hình sản xuất Just-in-Time (JIT) của Toyota: Đỉnh cao tinh gọn hay tử huyệt khi chuỗi cung ứng toàn cầu đứt gãy?",
+    "expectedEntities": ["Just-in-Time", "Toyota", "chuỗi cung ứng", "sản xuất tinh gọn"]
+  },
+  {
+    "id": "holdout_09_trai_nghiem",
+    "communicationGoal": "Trải nghiệm",
+    "subjectType": "Đời sống / Nghề nghiệp",
+    "informationMode": "Experiential / Human",
+    "inputType": "Prompt tả thực",
+    "duration": 50,
+    "tone": "Chân thực, sống động",
+    "prompt": "Một ngày làm việc nghẹt thở của thợ lặn bão hòa sâu dưới đáy biển kiểm tra giàn khoan dầu khí ngoài khơi thềm lục địa Vũng Tàu",
+    "expectedEntities": ["thợ lặn bão hòa", "giàn khoan dầu khí", "Vũng Tàu", "đáy biển"]
+  },
+  {
+    "id": "holdout_10_thoi_su",
+    "communicationGoal": "Thông tin thời sự",
+    "subjectType": "Quy hoạch / Môi trường",
+    "informationMode": "Current / Factual",
+    "inputType": "Prompt thời sự",
+    "duration": 60,
+    "tone": "Thời sự, cân bằng",
+    "prompt": "Quy hoạch dự án siêu cảng trung chuyển quốc tế Cần Giờ: Cơ hội đưa TP.HCM thành trung tâm hàng hải khu vực và bài toán bảo tồn khu dự trữ sinh quyển",
+    "expectedEntities": ["cảng Cần Giờ", "TP.HCM", "rừng ngập mặn", "khu dự trữ sinh quyển"]
+  },
+  {
+    "id": "holdout_11_quang_ba",
+    "communicationGoal": "Quảng bá / Truyền thông",
+    "subjectType": "Văn hóa / Sự kiện",
+    "informationMode": "Cultural / Vibrant",
+    "inputType": "Prompt truyền cảm hứng",
+    "duration": 45,
+    "tone": "Nhiệt huyết, tự hào",
+    "prompt": "Hương vị Tây Nguyên tại Lễ hội cà phê Buôn Ma Thuột: Nơi tôn vinh văn hóa cồng chiêng và khát vọng đưa Robusta Việt Nam chinh phục thế giới",
+    "expectedEntities": ["Buôn Ma Thuột", "cà phê Robusta", "không gian văn hóa cồng chiêng", "Tây Nguyên"]
+  },
+  {
+    "id": "holdout_12_documentary",
+    "communicationGoal": "Documentary / Informational",
+    "subjectType": "Kiến trúc / Kỳ quan",
+    "informationMode": "Informational / Deep",
+    "inputType": "Prompt kiến trúc",
+    "duration": 62,
+    "tone": "Trang trọng, ngưỡng mộ",
+    "prompt": "Kiệt tác kiến trúc Nhà hát Opera Sydney: Bản vẽ hình cánh buồm từng bị coi là bất khả thi và bài toán hình học cầu cứu vãn công trình",
+    "expectedEntities": ["Nhà hát Opera Sydney", "Jørn Utzon", "hình cánh buồm", "hình học cầu"]
+  }
+]

@@ -1,0 +1,152 @@
+{
+  "title": "NÓI VỀ NHỮNG ĐIỀU CÓ THỂ BẠN CHƯA BIẾT VỀ TÊN LỬA SCUD-B",
+  "coreTopic": "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+  "arcType": "MYTH_REALITY_EVIDENCE",
+  "selectedHook": {
+    "id": "hook_unexpected_fact",
+    "archetype": "unexpected_fact",
+    "text": "Con số 1984 đang tạo nên bước ngoặt bất ngờ cho Nói về những điều có thể bạn chưa biết về tên lửa Scud-B mà rất ít người để ý.",
+    "visualIdea": "Cận cảnh số liệu 1984 xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+    "scoreBreakdown": {
+      "relevance": 18,
+      "clarity": 12,
+      "curiosity": 18,
+      "specificity": 14,
+      "credibility": 15,
+      "visualPotential": 14,
+      "totalScore": 91
+    },
+    "selectionRationale": "Dẫn dắt trực diện bằng dữ liệu thực tế đã kiểm chứng, kích thích tư duy logic."
+  },
+  "brief": {
+    "contentType": "EXPLAINER",
+    "targetAudience": "Khán giả đại chúng quan tâm thông tin hữu ích và xu hướng mới trên short-form.",
+    "viewerPromise": "Nắm bắt trọn vẹn thông tin đắt giá nhất về Nói những điều có thể bạn chưa biết tên lửa Scud-B trong 60 giây mà không mất thời gian tra cứu.",
+    "coreQuestion": "Điều gì làm nên giá trị và sức ảnh hưởng đặc biệt của Nói những điều có thể bạn chưa biết tên lửa Scud-B?",
+    "tone": "curious_inspiring",
+    "designPreset": "MODERN",
+    "storytellingStrategy": "Kể chuyện theo góc nhìn \"Tò mò & Khám phá (Curiosity / Discovery)\", tập trung vào Góc nhìn mới lạ, phá vỡ định kiến thông thường, tạo cảm giác tò mò cao..",
+    "visualStrategy": "Sử dụng phong cách MODERN, ưu tiên thực thể xác thực và đồ họa tương phản cao.",
+    "pacingStrategy": "Nhịp kể linh hoạt, chuyển beat thông tin mỗi 4-7 giây, 1 câu = 1 ý súc tích.",
+    "audioStrategy": "Voiceover curious_inspiring, BGM hỗ trợ nền nhẹ nhàng, không lấn át lời thoại.",
+    "retentionStrategy": "Đặt câu hỏi tò mò ở 3 giây đầu, bổ sung insight bất ngờ ở giữa và payoff thuyết phục ở cuối.",
+    "selectedAngle": {
+      "id": "curiosity_discovery",
+      "name": "Tò mò & Khám phá (Curiosity / Discovery)",
+      "hookHypothesis": "Những điều bất ngờ đằng sau Nói những điều có thể bạn chưa biết tên lửa Scud-B mà ít người nhận ra.",
+      "focus": "Góc nhìn mới lạ, phá vỡ định kiến thông thường, tạo cảm giác tò mò cao.",
+      "score": 88,
+      "selectionRationale": "Tối ưu tỷ lệ giữ chân (retention) và kích thích xem hết video trên TikTok/Reels."
+    },
+    "allAngles": [
+      {
+        "id": "curiosity_discovery",
+        "name": "Tò mò & Khám phá (Curiosity / Discovery)",
+        "hookHypothesis": "Những điều bất ngờ đằng sau Nói những điều có thể bạn chưa biết tên lửa Scud-B mà ít người nhận ra.",
+        "focus": "Góc nhìn mới lạ, phá vỡ định kiến thông thường, tạo cảm giác tò mò cao.",
+        "score": 88,
+        "selectionRationale": "Tối ưu tỷ lệ giữ chân (retention) và kích thích xem hết video trên TikTok/Reels."
+      },
+      {
+        "id": "problem_consequence",
+        "name": "Vấn đề & Hệ quả (Problem / Consequence)",
+        "hookHypothesis": "Rủi ro hoặc cơ hội lớn liên quan trực tiếp đến bạn từ Nói những điều có thể bạn chưa biết tên lửa Scud-B.",
+        "focus": "Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết.",
+        "score": 85,
+        "selectionRationale": "Tác động trực tiếp vào tâm lý cần ra quyết định và bài toán chi phí/lợi ích."
+      },
+      {
+        "id": "information_first",
+        "name": "Trực diện thông tin (Information-First)",
+        "hookHypothesis": "Toàn cảnh số liệu và sự thật xác thực về Nói những điều có thể bạn chưa biết tên lửa Scud-B.",
+        "focus": "Độ chuẩn xác, số liệu cụ thể, tổng quan rõ ràng và đáng tin cậy.",
+        "score": 82,
+        "selectionRationale": "Phù hợp khi khán giả tìm kiếm câu trả lời nhanh chóng và số liệu chính xác."
+      }
+    ],
+    "profile": "BALANCED"
+  },
+  "scenes": [
+    {
+      "sceneId": 1,
+      "purpose": "hook",
+      "voiceText": "Con số 1984 đang tạo nên bước ngoặt bất ngờ cho Nói về những điều có thể bạn chưa biết về tên lửa Scud-B mà rất ít người để ý.",
+      "caption": "NÓI VỀ NHỮNG ĐIỀU CÓ THỂ BẠN CHƯA BIẾT VỀ TÊN LỬA SCUD-B",
+      "expectedEntities": [
+        "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B"
+      ],
+      "visualType": "photo",
+      "visualConcept": "Cận cảnh số liệu 1984 xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+      "assetStrategy": "Ưu tiên ảnh chụp hoặc video góc rộng chính xác của thực thể.",
+      "motionStrategy": "Cinematic zoom từ từ vào trung tâm, tạo chiều sâu 3D.",
+      "transitionStrategy": "3d_flycam",
+      "emotionalBeat": "Hào hứng, tò mò, mở màn ấn tượng.",
+      "estimatedDuration": 12
+    },
+    {
+      "sceneId": 2,
+      "purpose": "insight",
+      "voiceText": "Đây là danh sách vụ phóng tên lửa của Cộng hòa Dân chủ Nhân dân Triều Tiên từ năm 1984 cho đến nay.",
+      "caption": "ĐIỂM NHẤN #1",
+      "expectedEntities": [
+        "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B"
+      ],
+      "visualType": "infographic",
+      "visualConcept": "Đồ họa làm nổi bật vị trí hoặc thông số nổi trội đầu tiên của Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+      "assetStrategy": "Biểu đồ hoặc bản đồ trực quan minh họa ngữ cảnh địa lý/dữ liệu.",
+      "motionStrategy": "Pan mượt từ trái sang phải, làm nổi bật thông tin then chốt.",
+      "transitionStrategy": "3d_tilt",
+      "emotionalBeat": "Khai mở thông tin, tăng độ tin cậy.",
+      "estimatedDuration": 12
+    },
+    {
+      "sceneId": 3,
+      "purpose": "contrast",
+      "voiceText": "Nhưng yếu tố thực sự tạo nên sự bứt phá chính là khả năng đáp ứng hoàn hảo mọi nhu cầu thực tế của người dùng.",
+      "caption": "BƯỚC NGOẶT CỐT LÕI",
+      "expectedEntities": [
+        "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B"
+      ],
+      "visualType": "b_roll",
+      "visualConcept": "Góc quay cận cảnh trải nghiệm thực tế với chuyển động camera dynamic whip",
+      "assetStrategy": "Video hoặc hình ảnh b-roll chất lượng cao thể hiện chi tiết hành động.",
+      "motionStrategy": "Dynamic whip cut tạo nhịp chuyển cảnh nhanh, tránh đứng hình.",
+      "transitionStrategy": "dynamic_whip",
+      "emotionalBeat": "Bất ngờ, tương phản, kích thích giữ chân.",
+      "estimatedDuration": 12
+    },
+    {
+      "sceneId": 4,
+      "purpose": "evidence",
+      "voiceText": "Các số liệu kiểm chứng đã khẳng định Đây là danh sách vụ phóng tên lửa của Cộng hòa Dân chủ Nhân dân Triều Tiên từ năm 1984 cho đến !",
+      "caption": "CHỨNG CỨ XÁC THỰC",
+      "expectedEntities": [
+        "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B"
+      ],
+      "visualType": "number_card",
+      "visualConcept": "Thẻ số liệu kích thước lớn hiển thị kết quả kiểm chứng rõ ràng",
+      "assetStrategy": "Typography động với con số tăng dần (count-up) trên nền tối sang trọng.",
+      "motionStrategy": "Text reveal dứt khoát, số liệu nhảy trực quan.",
+      "transitionStrategy": "cinematic_zoom",
+      "emotionalBeat": "Thuyết phục, củng cố niềm tin vững chắc.",
+      "estimatedDuration": 12
+    },
+    {
+      "sceneId": 5,
+      "purpose": "cta",
+      "voiceText": "Bạn đánh giá thế nào về Nói về những điều có thể bạn chưa biết về tên lửa Scud-B? Hãy để lại bình luận bên dưới, lưu video và bấm theo dõi kênh ngay hôm nay!",
+      "caption": "BẠN NGHĨ SAO?",
+      "expectedEntities": [
+        "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B"
+      ],
+      "visualType": "kinetic_typography",
+      "visualConcept": "Màn hình kết thúc với nút tương tác like, share và avatar kênh sắc nét",
+      "assetStrategy": "Motion graphics kêu gọi hành động chuẩn safe-zone short-form.",
+      "motionStrategy": "Pulse nhẹ nhàng tại icon CTA thu hút ngón tay chạm.",
+      "transitionStrategy": "3d_flycam",
+      "emotionalBeat": "Thỏa mãn, thôi thúc hành động kết nối.",
+      "estimatedDuration": 12
+    }
+  ],
+  "totalEstimatedDuration": 60
+}

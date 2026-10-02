@@ -1,0 +1,54 @@
+{
+  "prompt": "Đánh giá xe máy điện Dat Bike Weaver 200 thực tế",
+  "duration": 30,
+  "aspectRatio": "9:16",
+  "style": "Sports / Crimson Flame",
+  "brief": {
+    "contentType": "PRODUCT",
+    "targetAudience": "Người dùng công nghệ, người mua sắm thông thái tìm kiếm đánh giá khách quan.",
+    "viewerPromise": "Đánh giá chân thực về công năng, trải nghiệm thực tế và so sánh giá trị so với tầm giá của Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+    "coreQuestion": "Sản phẩm này có thực sự vượt trội như quảng cáo hay chỉ là trào lưu?",
+    "tone": "energetic_engaging",
+    "designPreset": "TECH",
+    "storytellingStrategy": "Kể chuyện theo góc nhìn \"Vấn đề & Hệ quả (Problem / Consequence)\", tập trung vào Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết..",
+    "visualStrategy": "Sử dụng phong cách TECH, ưu tiên thực thể xác thực và đồ họa tương phản cao.",
+    "pacingStrategy": "Nhịp kể linh hoạt, chuyển beat thông tin mỗi 4-7 giây, 1 câu = 1 ý súc tích.",
+    "audioStrategy": "Voiceover energetic_engaging, BGM hỗ trợ nền nhẹ nhàng, không lấn át lời thoại.",
+    "retentionStrategy": "Đặt câu hỏi tò mò ở 3 giây đầu, bổ sung insight bất ngờ ở giữa và payoff thuyết phục ở cuối.",
+    "selectedAngle": {
+      "id": "problem_consequence",
+      "name": "Vấn đề & Hệ quả (Problem / Consequence)",
+      "hookHypothesis": "Rủi ro hoặc cơ hội lớn liên quan trực tiếp đến bạn từ Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+      "focus": "Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết.",
+      "score": 94,
+      "selectionRationale": "Tác động trực tiếp vào tâm lý cần ra quyết định và bài toán chi phí/lợi ích."
+    },
+    "allAngles": [
+      {
+        "id": "problem_consequence",
+        "name": "Vấn đề & Hệ quả (Problem / Consequence)",
+        "hookHypothesis": "Rủi ro hoặc cơ hội lớn liên quan trực tiếp đến bạn từ Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+        "focus": "Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết.",
+        "score": 94,
+        "selectionRationale": "Tác động trực tiếp vào tâm lý cần ra quyết định và bài toán chi phí/lợi ích."
+      },
+      {
+        "id": "curiosity_discovery",
+        "name": "Tò mò & Khám phá (Curiosity / Discovery)",
+        "hookHypothesis": "Những điều bất ngờ đằng sau Đánh giá xe máy điện Dat Bike Weaver 200 thực tế mà ít người nhận ra.",
+        "focus": "Góc nhìn mới lạ, phá vỡ định kiến thông thường, tạo cảm giác tò mò cao.",
+        "score": 88,
+        "selectionRationale": "Tối ưu tỷ lệ giữ chân (retention) và kích thích xem hết video trên TikTok/Reels."
+      },
+      {
+        "id": "information_first",
+        "name": "Trực diện thông tin (Information-First)",
+        "hookHypothesis": "Toàn cảnh số liệu và sự thật xác thực về Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+        "focus": "Độ chuẩn xác, số liệu cụ thể, tổng quan rõ ràng và đáng tin cậy.",
+        "score": 82,
+        "selectionRationale": "Phù hợp khi khán giả tìm kiếm câu trả lời nhanh chóng và số liệu chính xác."
+      }
+    ],
+    "profile": "BALANCED"
+  }
+}

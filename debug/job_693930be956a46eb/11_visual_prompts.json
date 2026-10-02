@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "prompt": "cinematic wide shot of Hà Tĩnh, majestic landscape, vibrant colors, 4k ultra detailed",
+    "type": "photo"
+  },
+  {
+    "id": 2,
+    "prompt": "close-up detailed aesthetic photography of Hà Tĩnh key sights, crystal clear water, mountain view",
+    "type": "b-roll"
+  },
+  {
+    "id": 3,
+    "prompt": "cultural heritage site, historic architecture, golden light, dynamic camera motion",
+    "type": "statistics"
+  },
+  {
+    "id": 4,
+    "prompt": "mouth-watering authentic cuisine delicacies culinary presentation high contrast",
+    "type": "photo"
+  },
+  {
+    "id": 5,
+    "prompt": "stunning golden hour cinematic landscape view, inspiring travel vibe, 4k",
+    "type": "kinetic_typography"
+  }
+]

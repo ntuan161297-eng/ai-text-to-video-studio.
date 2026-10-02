@@ -1,0 +1,16 @@
+{
+  "id": "hook_unexpected_fact",
+  "archetype": "unexpected_fact",
+  "text": "Con số 1984 đang tạo nên bước ngoặt bất ngờ cho Nói về những điều có thể bạn chưa biết về tên lửa Scud-B mà rất ít người để ý.",
+  "visualIdea": "Cận cảnh số liệu 1984 xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+  "scoreBreakdown": {
+    "relevance": 18,
+    "clarity": 12,
+    "curiosity": 18,
+    "specificity": 14,
+    "credibility": 15,
+    "visualPotential": 14,
+    "totalScore": 91
+  },
+  "selectionRationale": "Dẫn dắt trực diện bằng dữ liệu thực tế đã kiểm chứng, kích thích tư duy logic."
+}

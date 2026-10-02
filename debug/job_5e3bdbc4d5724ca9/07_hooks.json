@@ -1,0 +1,82 @@
+[
+  {
+    "id": "hook_unexpected_fact",
+    "archetype": "unexpected_fact",
+    "text": "Có một sự thật đặc biệt về tên lửa Scud-B mà rất ít người để ý đến.",
+    "visualIdea": "Cận cảnh chi tiết đắt giá nhất của tên lửa Scud-B xuất hiện với ánh sáng tương phản cao",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 15,
+      "curiosity": 19,
+      "specificity": 14,
+      "credibility": 15,
+      "visualPotential": 15,
+      "totalScore": 97
+    },
+    "selectionRationale": "Dẫn dắt trực diện bằng thông tin thực tế cuốn hút, kích thích tò mò ngay giây đầu."
+  },
+  {
+    "id": "hook_question",
+    "archetype": "question",
+    "text": "Điều gì đã khiến tên lửa Scud-B trở thành cái tên thu hút sự chú ý đặc biệt hiện nay?",
+    "visualIdea": "Toàn cảnh góc quay rộng mở đầu với camera pan mạnh tạo cảm giác choáng ngợp",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 15,
+      "curiosity": 18,
+      "specificity": 13,
+      "credibility": 14,
+      "visualPotential": 14,
+      "totalScore": 93
+    },
+    "selectionRationale": "Đặt câu hỏi kích hoạt sự chú ý ngay từ giây đầu tiên, nhịp điệu tự nhiên."
+  },
+  {
+    "id": "hook_curiosity_gap",
+    "archetype": "curiosity_gap",
+    "text": "Những điểm đắt giá nhất về tên lửa Scud-B mà không phải ai cũng biết!",
+    "visualIdea": "Hình ảnh thực thể với ánh sáng tương phản cao và hiệu ứng phóng to cinematic zoom",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 14,
+      "curiosity": 19,
+      "specificity": 13,
+      "credibility": 13,
+      "visualPotential": 14,
+      "totalScore": 92
+    },
+    "selectionRationale": "Tạo khoảng trống thông tin cuốn hút, hứa hẹn giá trị rõ ràng cho người xem."
+  },
+  {
+    "id": "hook_comparison",
+    "archetype": "comparison",
+    "text": "Khác xa với những suy nghĩ thông thường, thực tế về tên lửa Scud-B sẽ khiến bạn bất ngờ.",
+    "visualIdea": "Chia đôi màn hình (split-screen) đối chiếu hai khía cạnh đối lập",
+    "scoreBreakdown": {
+      "relevance": 18,
+      "clarity": 14,
+      "curiosity": 17,
+      "specificity": 13,
+      "credibility": 14,
+      "visualPotential": 15,
+      "totalScore": 91
+    },
+    "selectionRationale": "Cấu trúc so sánh giúp khán giả dễ hình dung và kích thích phản biện."
+  },
+  {
+    "id": "hook_reveal",
+    "archetype": "reveal",
+    "text": "Toàn bộ những chi tiết đặc biệt và chân thực nhất của tên lửa Scud-B được hé lộ ngay sau đây.",
+    "visualIdea": "Góc máy flycam từ trên cao lướt nhanh vào tâm điểm của thực thể",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 14,
+      "curiosity": 15,
+      "specificity": 13,
+      "credibility": 15,
+      "visualPotential": 15,
+      "totalScore": 91
+    },
+    "selectionRationale": "Mở màn đĩnh đạc, phù hợp với các chủ đề mang tính uy tín, trang trọng hoặc du lịch."
+  }
+]

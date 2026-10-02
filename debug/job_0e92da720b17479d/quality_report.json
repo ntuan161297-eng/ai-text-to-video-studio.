@@ -1,0 +1,19 @@
+{
+  "sourceQuality": 6,
+  "factualAccuracy": 11,
+  "topicRelevance": 10,
+  "hookStrength": 9.5,
+  "storytelling": 9.5,
+  "retentionPotential": 9,
+  "visualRelevance": 9,
+  "visualVariety": 5,
+  "voiceQuality": 4.8,
+  "subtitleReadability": 5,
+  "informationDensity": 4.5,
+  "mobileReadability": 5,
+  "totalScore": 88.3,
+  "passedProductionGate": false,
+  "reasons": [
+    "Điểm chính xác thông tin 11/15 chưa đạt chuẩn >= 13."
+  ]
+}

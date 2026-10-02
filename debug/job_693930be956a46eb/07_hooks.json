@@ -1,0 +1,23 @@
+[
+  {
+    "id": "hook_1",
+    "type": "curiosity_gap",
+    "hookText": "Nếu bạn nghĩ Hà Tĩnh chỉ có nắng gió, thì 60 giây sau đây sẽ thay đổi hoàn toàn suy nghĩ của bạn!",
+    "score": 95,
+    "reason": "Tạo khoảng trống tò mò mạnh, phá bỏ định kiến thường thấy."
+  },
+  {
+    "id": "hook_2",
+    "type": "problem_stakes",
+    "hookText": "Muốn một chuyến đi vừa có biển xanh hoang sơ, vừa có non thiêng mây ngàn mà không đông đúc? Hãy đến ngay Hà Tĩnh!",
+    "score": 90,
+    "reason": "Đánh trúng nhu cầu tìm điểm đến nghỉ dưỡng trong lành, tránh chen chúc."
+  },
+  {
+    "id": "hook_3",
+    "type": "contrarian_reveal",
+    "hookText": "Đây là tọa độ du lịch sở hữu những kỷ lục bất ngờ của miền Trung mà không phải ai cũng biết!",
+    "score": 88,
+    "reason": "Kích thích khám phá những điều bí ẩn ít người biết."
+  }
+]

@@ -1,0 +1,63 @@
+{
+  "name": "ai-text-to-video",
+  "version": "1.0.0",
+  "description": "Tự động tạo video TikTok/Shorts 9:16 từ text, ý tưởng hoặc URL bằng Remotion và AI",
+  "main": "src/cli.ts",
+  "type": "module",
+  "scripts": {
+    "video": "tsx src/cli.ts",
+    "render": "tsx src/cli.ts",
+    "server": "tsx src/server/index.ts",
+    "worker": "tsx src/worker/index.ts",
+    "dev:api": "tsx watch src/server/index.ts",
+    "remotion:preview": "remotion preview src/remotion/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [
+    "remotion",
+    "text-to-video",
+    "tts",
+    "ai-video",
+    "tiktok"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/bundler": "^4.0.218",
+    "@remotion/cli": "^4.0.218",
+    "@remotion/renderer": "^4.0.218",
+    "axios": "^1.7.7",
+    "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.9",
+    "cheerio": "^1.0.0",
+    "commander": "^12.1.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "edge-tts-node": "^1.5.7",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "hyperframes": "^0.8.90",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "music-metadata": "^7.14.0",
+    "pg": "^8.23.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.218",
+    "uuid": "^14.0.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.14.10",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  }
+}

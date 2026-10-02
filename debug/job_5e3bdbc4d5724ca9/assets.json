@@ -1,0 +1,62 @@
+[
+  {
+    "sceneId": 1,
+    "entityName": "tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 90,
+    "entityAuthenticity": 85,
+    "isAuthenticAssetApproved": true,
+    "chosenVisualStrategy": "authentic_media",
+    "assetUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/VD2022_1.jpg/330px-VD2022_1.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  },
+  {
+    "sceneId": 2,
+    "entityName": "tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 3,
+    "entityName": "tên lửa Scud-B",
+    "classification": "REAL_PERSON",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 4,
+    "entityName": "tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 5,
+    "entityName": "tên lửa Scud-B",
+    "classification": "REAL_PERSON",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 6,
+    "entityName": "tên lửa Scud-B",
+    "classification": "REAL_PERSON",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  }
+]

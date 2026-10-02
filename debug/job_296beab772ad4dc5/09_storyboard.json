@@ -1,0 +1,120 @@
+{
+  "title": "XE MÁY ĐIỆN DAT BIKE WEAVER 200 THỰC TẾ",
+  "coreTopic": "xe máy điện Dat Bike Weaver 200 thực tế",
+  "arcType": "HOOK_PROBLEM_EXPLANATION_PAYOFF",
+  "selectedHook": {
+    "id": "hook_unexpected_fact",
+    "archetype": "unexpected_fact",
+    "text": "Một sự thật bất ngờ đằng sau xe máy điện Dat Bike Weaver 200 thực tế đang làm thay đổi hoàn toàn cách nhìn của giới chuyên môn.",
+    "visualIdea": "Cận cảnh số liệu đặc biệt xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+    "scoreBreakdown": {
+      "relevance": 18,
+      "clarity": 12,
+      "curiosity": 18,
+      "specificity": 14,
+      "credibility": 15,
+      "visualPotential": 14,
+      "totalScore": 91
+    },
+    "selectionRationale": "Dẫn dắt trực diện bằng dữ liệu thực tế đã kiểm chứng, kích thích tư duy logic."
+  },
+  "brief": {
+    "contentType": "PRODUCT",
+    "targetAudience": "Người dùng công nghệ, người mua sắm thông thái tìm kiếm đánh giá khách quan.",
+    "viewerPromise": "Đánh giá chân thực về công năng, trải nghiệm thực tế và so sánh giá trị so với tầm giá của Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+    "coreQuestion": "Sản phẩm này có thực sự vượt trội như quảng cáo hay chỉ là trào lưu?",
+    "tone": "energetic_engaging",
+    "designPreset": "TECH",
+    "storytellingStrategy": "Kể chuyện theo góc nhìn \"Vấn đề & Hệ quả (Problem / Consequence)\", tập trung vào Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết..",
+    "visualStrategy": "Sử dụng phong cách TECH, ưu tiên thực thể xác thực và đồ họa tương phản cao.",
+    "pacingStrategy": "Nhịp kể linh hoạt, chuyển beat thông tin mỗi 4-7 giây, 1 câu = 1 ý súc tích.",
+    "audioStrategy": "Voiceover energetic_engaging, BGM hỗ trợ nền nhẹ nhàng, không lấn át lời thoại.",
+    "retentionStrategy": "Đặt câu hỏi tò mò ở 3 giây đầu, bổ sung insight bất ngờ ở giữa và payoff thuyết phục ở cuối.",
+    "selectedAngle": {
+      "id": "problem_consequence",
+      "name": "Vấn đề & Hệ quả (Problem / Consequence)",
+      "hookHypothesis": "Rủi ro hoặc cơ hội lớn liên quan trực tiếp đến bạn từ Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+      "focus": "Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết.",
+      "score": 94,
+      "selectionRationale": "Tác động trực tiếp vào tâm lý cần ra quyết định và bài toán chi phí/lợi ích."
+    },
+    "allAngles": [
+      {
+        "id": "problem_consequence",
+        "name": "Vấn đề & Hệ quả (Problem / Consequence)",
+        "hookHypothesis": "Rủi ro hoặc cơ hội lớn liên quan trực tiếp đến bạn từ Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+        "focus": "Lợi ích cá nhân, giải quyết nỗi đau hoặc cảnh báo xu hướng cấp thiết.",
+        "score": 94,
+        "selectionRationale": "Tác động trực tiếp vào tâm lý cần ra quyết định và bài toán chi phí/lợi ích."
+      },
+      {
+        "id": "curiosity_discovery",
+        "name": "Tò mò & Khám phá (Curiosity / Discovery)",
+        "hookHypothesis": "Những điều bất ngờ đằng sau Đánh giá xe máy điện Dat Bike Weaver 200 thực tế mà ít người nhận ra.",
+        "focus": "Góc nhìn mới lạ, phá vỡ định kiến thông thường, tạo cảm giác tò mò cao.",
+        "score": 88,
+        "selectionRationale": "Tối ưu tỷ lệ giữ chân (retention) và kích thích xem hết video trên TikTok/Reels."
+      },
+      {
+        "id": "information_first",
+        "name": "Trực diện thông tin (Information-First)",
+        "hookHypothesis": "Toàn cảnh số liệu và sự thật xác thực về Đánh giá xe máy điện Dat Bike Weaver 200 thực tế.",
+        "focus": "Độ chuẩn xác, số liệu cụ thể, tổng quan rõ ràng và đáng tin cậy.",
+        "score": 82,
+        "selectionRationale": "Phù hợp khi khán giả tìm kiếm câu trả lời nhanh chóng và số liệu chính xác."
+      }
+    ],
+    "profile": "BALANCED"
+  },
+  "scenes": [
+    {
+      "sceneId": 1,
+      "purpose": "hook",
+      "voiceText": "Một sự thật bất ngờ đằng sau xe máy điện Dat Bike Weaver 200 thực tế đang làm thay đổi hoàn toàn cách nhìn của giới chuyên môn.",
+      "caption": "XE MÁY ĐIỆN DAT BIKE WEAVER 200 THỰC TẾ",
+      "expectedEntities": [
+        "xe máy điện Dat Bike Weaver 200 thực tế"
+      ],
+      "visualType": "photo",
+      "visualConcept": "Cận cảnh số liệu đặc biệt xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+      "assetStrategy": "Ưu tiên ảnh chụp hoặc video góc rộng chính xác của thực thể.",
+      "motionStrategy": "Cinematic zoom từ từ vào trung tâm, tạo chiều sâu 3D.",
+      "transitionStrategy": "3d_flycam",
+      "emotionalBeat": "Hào hứng, tò mò, mở màn ấn tượng.",
+      "estimatedDuration": 10
+    },
+    {
+      "sceneId": 2,
+      "purpose": "insight",
+      "voiceText": "Điều đầu tiên khiến xe máy điện Dat Bike Weaver 200 thực tế trở nên đặc biệt chính là giá trị thực tế vượt trội so với các đối thủ cùng phân khúc.",
+      "caption": "ĐIỂM NHẤN #1",
+      "expectedEntities": [
+        "xe máy điện Dat Bike Weaver 200 thực tế"
+      ],
+      "visualType": "infographic",
+      "visualConcept": "Đồ họa làm nổi bật vị trí hoặc thông số nổi trội đầu tiên của xe máy điện Dat Bike Weaver 200 thực tế",
+      "assetStrategy": "Biểu đồ hoặc bản đồ trực quan minh họa ngữ cảnh địa lý/dữ liệu.",
+      "motionStrategy": "Pan mượt từ trái sang phải, làm nổi bật thông tin then chốt.",
+      "transitionStrategy": "3d_tilt",
+      "emotionalBeat": "Khai mở thông tin, tăng độ tin cậy.",
+      "estimatedDuration": 10
+    },
+    {
+      "sceneId": 3,
+      "purpose": "cta",
+      "voiceText": "Bạn đánh giá thế nào về xe máy điện Dat Bike Weaver 200 thực tế? Hãy để lại bình luận bên dưới, lưu video và bấm theo dõi kênh ngay hôm nay!",
+      "caption": "BẠN NGHĨ SAO?",
+      "expectedEntities": [
+        "xe máy điện Dat Bike Weaver 200 thực tế"
+      ],
+      "visualType": "kinetic_typography",
+      "visualConcept": "Màn hình kết thúc với nút tương tác like, share và avatar kênh sắc nét",
+      "assetStrategy": "Motion graphics kêu gọi hành động chuẩn safe-zone short-form.",
+      "motionStrategy": "Pulse nhẹ nhàng tại icon CTA thu hút ngón tay chạm.",
+      "transitionStrategy": "3d_flycam",
+      "emotionalBeat": "Thỏa mãn, thôi thúc hành động kết nối.",
+      "estimatedDuration": 10
+    }
+  ],
+  "totalEstimatedDuration": 30
+}

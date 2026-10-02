@@ -1,0 +1,45 @@
+# ==========================================
+# GITIGNORE - AI TEXT TO VIDEO STUDIO
+# ==========================================
+
+# 1. Thu mục thư viện (Rất nặng, người dùng sẽ tự tải bằng npm install)
+node_modules/
+web/node_modules/
+.pnpm-store/
+
+# 2. File bí mật & Cấu hình môi trường (TUYỆT ĐỐI KHÔNG PUSH LÊN GIT)
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# 3. File video đã render và thư mục tạm (Rất nặng)
+output/
+temp/
+renders/
+review/
+dist/
+*.mp4
+*.wav
+*.mp3
+*.aac
+
+# 4. Next.js Build Cache & Traces
+web/.next/
+web/out/
+
+# 5. Database lưu trữ cục bộ
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# 6. Nhật ký lỗi (Logs)
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# 7. File rác hệ điều hành
+.DS_Store
+Thumbs.db
+desktop.ini

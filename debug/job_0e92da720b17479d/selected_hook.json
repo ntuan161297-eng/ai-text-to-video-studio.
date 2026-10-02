@@ -1,0 +1,16 @@
+{
+  "id": "hook_unexpected_fact",
+  "archetype": "unexpected_fact",
+  "text": "Một sự thật bất ngờ đằng sau xe máy điện DatBike\n\n[Sự thật đã kiểm chứng từ các nguồn uy tín]:\n[Fact #1 - Wikipedia Tiếng Việt (95%)]: Đà Nẵng là một trong chín thành phố trực thuộc trung ương của Việt Nam, nằm tại khu vực Duyên hải Nam Trung Bộ và Tây Nguyên.\n\n[Fact #2 - Wikipedia Tiếng Việt (95%)]: Thành phố Đà Nẵng hiện là đô thị loại I, là thành phố trung tâm cấp vùng và cấp quốc gia.\n\n[Fact #3 - Wikipedia Tiếng Việt (100%)]: Đây là thành phố có diện tích lớn thứ hai của Việt Nam, đóng vai trò là trung tâm chính trị, kinh tế – xã hội lớn của miền Trung và là hạt nhân quan trọng trong Vùng kinh tế trọng điểm miền Trung. đang làm thay đổi hoàn toàn cách nhìn của giới chuyên môn.",
+  "visualIdea": "Cận cảnh số liệu đặc biệt xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+  "scoreBreakdown": {
+    "relevance": 18,
+    "clarity": 12,
+    "curiosity": 18,
+    "specificity": 14,
+    "credibility": 15,
+    "visualPotential": 14,
+    "totalScore": 91
+  },
+  "selectionRationale": "Dẫn dắt trực diện bằng dữ liệu thực tế đã kiểm chứng, kích thích tư duy logic."
+}

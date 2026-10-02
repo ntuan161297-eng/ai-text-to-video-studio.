@@ -1,0 +1,52 @@
+[
+  {
+    "sceneId": 1,
+    "entityName": "Thống kê số liệu",
+    "classification": "DATA_VISUAL",
+    "semanticRelevance": 95,
+    "entityAuthenticity": 95,
+    "isAuthenticAssetApproved": true,
+    "chosenVisualStrategy": "authentic_media",
+    "assetUrl": "https://i1-thethao.vnecdn.net/2026/09/29/ap26228551405930-1790698300-8619-1790698703.jpg?w=1200&h=675&q=100&dpr=1&fit=crop&s=P-TZ9AHZoiDdFSQ484WzxQ"
+  },
+  {
+    "sceneId": 2,
+    "entityName": "Ngoại hạng Anh kết tội Man City",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 95,
+    "entityAuthenticity": 95,
+    "isAuthenticAssetApproved": true,
+    "chosenVisualStrategy": "authentic_media",
+    "assetUrl": "https://i1-thethao.vnecdn.net/2026/09/29/AP26228551405930-7066-1790698703.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=YvUhRNE_zbaQUlHz_LmAGg"
+  },
+  {
+    "sceneId": 3,
+    "entityName": "Ngoại hạng Anh kết tội Man City",
+    "classification": "REAL_PERSON",
+    "semanticRelevance": 95,
+    "entityAuthenticity": 95,
+    "isAuthenticAssetApproved": true,
+    "chosenVisualStrategy": "authentic_media",
+    "assetUrl": "https://i1-thethao.vnecdn.net/2026/09/29/wm1-man-city-vi-pha-m-17906986-5939-5402-1790698703.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=E0DKW4Ar3D6ytFh0jtlcKw"
+  },
+  {
+    "sceneId": 4,
+    "entityName": "Ngoại hạng Anh kết tội Man City",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 5,
+    "entityName": "Ngoại hạng Anh kết tội Man City",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  }
+]

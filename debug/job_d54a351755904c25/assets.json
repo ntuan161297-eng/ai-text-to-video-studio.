@@ -1,0 +1,52 @@
+[
+  {
+    "sceneId": 1,
+    "entityName": "Thống kê số liệu",
+    "classification": "DATA_VISUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "chart",
+    "fallbackReason": "Dữ liệu số liệu ưu tiên hiển thị biểu đồ/đồ thị thay vì ảnh minh họa trừu tượng."
+  },
+  {
+    "sceneId": 2,
+    "entityName": "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 3,
+    "entityName": "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 4,
+    "entityName": "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  },
+  {
+    "sceneId": 5,
+    "entityName": "Nói về những điều có thể bạn chưa biết về tên lửa Scud-B",
+    "classification": "CONCEPTUAL",
+    "semanticRelevance": 80,
+    "entityAuthenticity": 50,
+    "isAuthenticAssetApproved": false,
+    "chosenVisualStrategy": "neutral_illustration",
+    "fallbackReason": "Sử dụng đồ họa trung tính chuyên nghiệp."
+  }
+]

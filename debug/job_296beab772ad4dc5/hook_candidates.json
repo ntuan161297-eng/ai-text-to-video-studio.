@@ -1,0 +1,82 @@
+[
+  {
+    "id": "hook_unexpected_fact",
+    "archetype": "unexpected_fact",
+    "text": "Một sự thật bất ngờ đằng sau xe máy điện Dat Bike Weaver 200 thực tế đang làm thay đổi hoàn toàn cách nhìn của giới chuyên môn.",
+    "visualIdea": "Cận cảnh số liệu đặc biệt xuất hiện nổi bật với hiệu ứng đếm số (counter reveal)",
+    "scoreBreakdown": {
+      "relevance": 18,
+      "clarity": 12,
+      "curiosity": 18,
+      "specificity": 14,
+      "credibility": 15,
+      "visualPotential": 14,
+      "totalScore": 91
+    },
+    "selectionRationale": "Dẫn dắt trực diện bằng dữ liệu thực tế đã kiểm chứng, kích thích tư duy logic."
+  },
+  {
+    "id": "hook_reveal",
+    "archetype": "reveal",
+    "text": "Khám phá toàn bộ góc nhìn chân thực và những giá trị cốt lõi của xe máy điện Dat Bike Weaver 200 thực tế.",
+    "visualIdea": "Góc máy flycam từ trên cao lướt nhanh vào tâm điểm của thực thể",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 14,
+      "curiosity": 15,
+      "specificity": 13,
+      "credibility": 15,
+      "visualPotential": 15,
+      "totalScore": 91
+    },
+    "selectionRationale": "Mở màn đĩnh đạc, phù hợp với các chủ đề mang tính uy tín, trang trọng hoặc du lịch."
+  },
+  {
+    "id": "hook_question",
+    "archetype": "question",
+    "text": "Tại sao xe máy điện Dat Bike Weaver 200 thực tế lại trở thành tâm điểm bàn tán nhiều nhất hiện nay?",
+    "visualIdea": "Toàn cảnh góc quay rộng mở đầu với camera pan mạnh tạo cảm giác choáng ngợp",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 15,
+      "curiosity": 17,
+      "specificity": 12,
+      "credibility": 14,
+      "visualPotential": 13,
+      "totalScore": 90
+    },
+    "selectionRationale": "Đặt câu hỏi kích hoạt sự chú ý ngay từ giây đầu tiên, nhịp điệu tự nhiên."
+  },
+  {
+    "id": "hook_curiosity_gap",
+    "archetype": "curiosity_gap",
+    "text": "Những chi tiết đắt giá nhất về xe máy điện Dat Bike Weaver 200 thực tế sẽ được lật mở ngay trong 60 giây sau đây!",
+    "visualIdea": "Hình ảnh thực thể với ánh sáng tương phản cao và hiệu ứng phóng to cinematic zoom",
+    "scoreBreakdown": {
+      "relevance": 19,
+      "clarity": 12,
+      "curiosity": 19,
+      "specificity": 13,
+      "credibility": 13,
+      "visualPotential": 14,
+      "totalScore": 90
+    },
+    "selectionRationale": "Tạo khoảng trống thông tin cuốn hút, hứa hẹn giá trị rõ ràng cho người xem."
+  },
+  {
+    "id": "hook_comparison",
+    "archetype": "comparison",
+    "text": "So với kỳ vọng ban đầu, thực tế về xe máy điện Dat Bike Weaver 200 thực tế mang lại nhiều bất ngờ thú vị hơn bạn nghĩ.",
+    "visualIdea": "Chia đôi màn hình (split-screen) đối chiếu hai khía cạnh đối lập",
+    "scoreBreakdown": {
+      "relevance": 18,
+      "clarity": 11,
+      "curiosity": 16,
+      "specificity": 13,
+      "credibility": 14,
+      "visualPotential": 15,
+      "totalScore": 87
+    },
+    "selectionRationale": "Cấu trúc so sánh giúp khán giả dễ hình dung và kích thích phản biện."
+  }
+]
