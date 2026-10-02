@@ -470,12 +470,22 @@ export async function startWorker() {
   const concurrency = parseInt(process.env.VIDEO_WORKER_CONCURRENCY || '1', 10);
   console.log(`👷 Đang khởi chạy Video Worker (Concurrency: ${concurrency})...`);
 
+  // Nếu hệ thống đang dùng Local In-Process Queue, không kết nối Redis BullMQ Worker
+  const localQueue = getLocalQueueInstance();
+  if (localQueue) {
+    localQueue.setHandler(async (payload) => {
+      await processVideoJob(payload);
+    });
+    console.log(`✅ In-Process Worker Handler đã sẵn sàng nhận jobs.`);
+    return null;
+  }
+
   const redisHost = process.env.REDIS_HOST;
   const redisUrl = process.env.REDIS_URL;
 
   let bullWorker: Worker | null = null;
 
-  if (redisUrl || redisHost) {
+  if (redisUrl || (redisHost && process.env.USE_REDIS === 'true')) {
     try {
       const redis = redisUrl
         ? new Redis(redisUrl, { maxRetriesPerRequest: null })
@@ -510,17 +520,8 @@ export async function startWorker() {
       console.log(`✅ BullMQ Worker đã sẵn sàng nhận jobs từ Redis!`);
       return bullWorker;
     } catch (err: any) {
-      console.warn(`⚠️ Không thể kết nối Redis Worker (${err.message}). Sử dụng In-Process Queue Worker.`);
+      console.warn(`⚠️ Không thể kết nối Redis Worker (${err.message}).`);
     }
-  }
-
-  // Kết nối Local Queue Processor
-  const localQueue = getLocalQueueInstance();
-  if (localQueue) {
-    localQueue.setHandler(async (payload) => {
-      await processVideoJob(payload);
-    });
-    console.log(`✅ In-Process Worker Handler đã sẵn sàng nhận jobs.`);
   }
 
   return null;

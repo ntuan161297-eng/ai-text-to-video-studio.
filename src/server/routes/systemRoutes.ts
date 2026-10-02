@@ -59,13 +59,23 @@ systemRouter.post('/update', async (req: Request, res: Response) => {
   try {
     console.log('🔄 [SystemUpdate] Nhận lệnh cập nhật từ người dùng qua Web UI...');
 
+    // Kiểm tra xem thư mục có phải là Git repository không
+    if (!fs.existsSync(path.resolve('.git'))) {
+      return res.status(200).json({
+        success: false,
+        message: 'Bạn đang sử dụng Bản cài đặt đóng gói (.EXE) hoạt động độc lập không kèm Git. Khi có bản cập nhật mới, bạn chỉ cần tải và cài đè file AI_Studio_Setup_v1.0.exe mới lên máy là xong.',
+        error: 'Standalone installation does not use Git.',
+      });
+    }
+
     // 1. Kiểm tra môi trường Git
     try {
       await execAsync('git --version', { timeout: 4000 });
     } catch {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
-        error: 'Máy tính này chưa cài Git hoặc mã nguồn không phải là Git repository. Vui lòng cập nhật thủ công.',
+        message: 'Máy tính này chưa cài Git. Nếu muốn dùng tính năng tự động kéo code từ Git, vui lòng cài đặt Git for Windows tại git-scm.com.',
+        error: 'Git is not installed.',
       });
     }
 

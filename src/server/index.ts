@@ -24,12 +24,14 @@ async function bootstrap() {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n======================================================`);
-    console.log(`🌟 Backend API Server đang chạy tại: http://localhost:${PORT}`);
+    console.log(`✅ Backend Server đã khởi động thành công!`);
+    console.log(`🌐 ĐỊA CHỈ TRUY CẬP ỨNG DỤNG: http://localhost:3000`);
     const hasGemini = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim().length > 0);
     const hasOpenAI = Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim().length > 0);
-    const semanticProvider = hasGemini ? 'Gemini' : hasOpenAI ? 'OpenAI' : 'NONE';
-    console.log(`🧠 Semantic Provider Status: ${semanticProvider !== 'NONE' ? `CONFIGURED (${semanticProvider})` : 'NOT CONFIGURED'}`);
-    console.log(`📁 Video Output Directory: http://localhost:${PORT}/output`);
+    const semanticProvider = hasGemini ? 'Gemini' : hasOpenAI ? 'OpenAI' : 'Chưa cấu hình API Key (vào web cài đặt)';
+    console.log(`🔑 Trạng thái AI Key: ${semanticProvider}`);
+    console.log(`📁 Thư mục lưu Video: http://localhost:${PORT}/output`);
+    console.log(`👉 Hãy mở trình duyệt Web và truy cập: http://localhost:3000`);
     console.log(`======================================================\n`);
   });
 }

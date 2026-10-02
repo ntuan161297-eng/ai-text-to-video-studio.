@@ -124,6 +124,7 @@ export default function Home() {
       const res = await api.createVideo({
         ...input,
         operation: 'CREATE_NEW',
+        useUserBYOK: true,
       });
       setProcessingVideoId(res.videoId);
       fetchVideos();

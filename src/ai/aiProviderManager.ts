@@ -295,7 +295,7 @@ export class AIProviderManager {
     maxTokens?: number;
   }): Promise<string> {
     const { rawKey, systemPrompt, userPrompt, jsonMode, temperature, maxTokens } = params;
-    const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+    const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${rawKey}`;
 
     const parts: any[] = [];

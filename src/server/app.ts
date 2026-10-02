@@ -58,6 +58,39 @@ app.use('/api/videos', videoRouter);
 app.use('/api/admin/ai', adminAiRouter);
 app.use('/api/user/ai', userAiRouter);
 
+// Điều hướng thân thiện khi người dùng mở nhầm http://localhost:4000 thay vì http://localhost:3000
+app.get('/', (req: Request, res: Response) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>AI Text-to-Video Studio</title>
+      <meta http-equiv="refresh" content="2;url=http://localhost:3000">
+      <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
+        .card { background: #1e293b; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-width: 500px; border: 1px solid #334155; }
+        h1 { color: #38bdf8; margin-top: 0; font-size: 1.5rem; }
+        p { color: #94a3b8; line-height: 1.6; }
+        .btn { display: inline-block; margin-top: 1.5rem; padding: 0.85rem 2rem; background: #2563eb; color: #fff; text-decoration: none; border-radius: 0.5rem; font-weight: 600; font-size: 1rem; }
+        .btn:hover { background: #1d4ed8; }
+        .badge { background: #10b981; color: #fff; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 500; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div><span class="badge">✅ Máy chủ Backend Đang Chạy</span></div>
+        <h1 style="margin-top: 1rem;">AI Text-to-Video Studio</h1>
+        <p>Cổng <strong>4000</strong> là máy chủ xử lý dữ liệu. Giao diện làm việc của bạn ở cổng <strong>3000</strong>.</p>
+        <p>Đang tự động chuyển bạn sang giao diện Web...</p>
+        <a class="btn" href="http://localhost:3000">👉 Nhấp vào đây để Vào Giao Diện Studio</a>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
 // Health check endpoint
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({

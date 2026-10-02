@@ -241,7 +241,7 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
                 }`}>
                   {updateResult.success ? <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" /> : <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />}
                   <div className="space-y-1">
-                    <p className="font-bold">{updateResult.message}</p>
+                    <p className="font-bold">{updateResult.message || (updateResult as any).error || 'Thông báo cập nhật'}</p>
                     {updateResult.output && (
                       <pre className="text-[11px] font-mono p-2 bg-black/10 rounded-lg overflow-x-auto whitespace-pre-wrap">
                         {updateResult.output}

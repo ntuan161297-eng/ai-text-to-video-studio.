@@ -114,7 +114,7 @@ const createVideoSchema = z.object({
     .nullish(),
   aiMode: z.enum(['FULL_AI', 'ASSISTED_AI', 'NO_AI']).optional(),
   aiProviderStrategy: z.enum(['GEMINI', 'OPENAI', 'AUTO']).optional(),
-  useUserBYOK: z.boolean().optional(),
+  useUserBYOK: z.boolean().default(true),
   userInputData: z.any().optional(),
 });
 

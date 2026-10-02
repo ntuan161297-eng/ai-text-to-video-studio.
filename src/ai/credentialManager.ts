@@ -247,11 +247,11 @@ export class CredentialManager {
     userId?: string;
     useUserBYOK?: boolean;
   }): Promise<ResolvedCredential | null> {
-    const { provider, userId, useUserBYOK = false } = params;
+    const { provider, userId, useUserBYOK = true } = params;
     const db = await getDatabase();
 
-    // 1. Try User BYOK if requested
-    if (useUserBYOK && userId) {
+    // 1. Try User BYOK for the specific user if available
+    if (userId) {
       const userCreds = await db.getAICredentials({ userId, provider, ownerType: 'USER' });
       const readyUserCred = userCreds.find((c) => c.status === 'READY');
       if (readyUserCred) {
@@ -290,7 +290,26 @@ export class CredentialManager {
       };
     }
 
-    // 3. Fallback to Virtual ENV Credential
+    // 3. Fallback: Any available USER BYOK credential in DB (Crucial for desktop / standalone mode)
+    const anyUserCreds = await db.getAICredentials({ provider, ownerType: 'USER' });
+    const readyAnyCred = anyUserCreds.find((c) => c.status === 'READY');
+    if (readyAnyCred) {
+      const rawKey = SecretStore.decrypt({
+        encryptedKey: readyAnyCred.encryptedKey,
+        iv: readyAnyCred.iv,
+        authTag: readyAnyCred.authTag,
+      });
+      return {
+        credentialId: readyAnyCred.id,
+        provider: readyAnyCred.provider,
+        ownerType: 'USER',
+        source: 'DB',
+        rawKey,
+        maskedIdentifier: readyAnyCred.maskedIdentifier,
+      };
+    }
+
+    // 4. Fallback to Virtual ENV Credential
     const envKey =
       provider === 'GEMINI' ? process.env.GEMINI_API_KEY?.trim() : process.env.OPENAI_API_KEY?.trim();
     const envId = provider === 'GEMINI' ? 'env_gemini' : 'env_openai';
@@ -325,7 +344,7 @@ export class CredentialManager {
 
     try {
       if (provider === 'GEMINI') {
-        const testModel = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+        const testModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${testModel}:generateContent?key=${key}`;
         await axios.post(
           url,

@@ -102,23 +102,35 @@ export async function getVideoQueue(): Promise<IVideoQueue> {
   const redisHost = process.env.REDIS_HOST;
   const redisUrl = process.env.REDIS_URL;
 
-  if (redisUrl || redisHost) {
+  if (redisUrl || (redisHost && process.env.USE_REDIS === 'true')) {
     try {
       console.log('🔴 Đang kết nối tới Redis cho BullMQ...');
       const redis = redisUrl
-        ? new Redis(redisUrl, { maxRetriesPerRequest: null, connectTimeout: 2000 })
+        ? new Redis(redisUrl, {
+            maxRetriesPerRequest: null,
+            connectTimeout: 2000,
+            retryStrategy: () => null,
+            lazyConnect: true,
+          })
         : new Redis({
             host: redisHost || 'localhost',
             port: parseInt(process.env.REDIS_PORT || '6379', 10),
             maxRetriesPerRequest: null,
             connectTimeout: 2000,
+            retryStrategy: () => null,
+            lazyConnect: true,
           });
 
-      // Kiểm tra kết nối nhanh với timeout
+      redis.on('error', () => {
+        // Tránh unhandled error event trong môi trường standalone không có Redis
+      });
+
       await Promise.race([
-        redis.ping(),
+        redis.connect(),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), 2000)),
       ]);
+
+      await redis.ping();
 
       console.log('✅ Đã kết nối Redis BullMQ thành công!');
       queueInstance = new BullMQVideoQueue(redis);
