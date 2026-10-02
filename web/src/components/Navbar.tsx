@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { User } from '../lib/api';
-import { Sparkles, Video, Film, LogOut, User as UserIcon, Sun, Moon, LayoutDashboard, Settings } from 'lucide-react';
+import { Sparkles, Video, Film, LogOut, User as UserIcon, Sun, Moon, LayoutDashboard, Settings, HelpCircle } from 'lucide-react';
 
 interface NavbarProps {
   user: User | null;
@@ -10,6 +10,7 @@ interface NavbarProps {
   setActiveTab: (tab: 'create' | 'videos' | 'dashboard' | 'settings') => void;
   onOpenAuth: () => void;
   onLogout: () => void;
+  onStartTour?: () => void;
 }
 
 export function Navbar({
@@ -18,6 +19,7 @@ export function Navbar({
   setActiveTab,
   onOpenAuth,
   onLogout,
+  onStartTour,
 }: NavbarProps) {
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
@@ -76,6 +78,7 @@ export function Navbar({
         {/* Center Navigation Capsule */}
         <nav className="flex items-center space-x-1 p-1 rounded-2xl bg-[#F9FAFC] dark:bg-[#161e31] border border-[#DDE3EE] dark:border-white/10 shadow-inner">
           <button
+            id="nav-dashboard-tab"
             onClick={() => setActiveTab('dashboard')}
             className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'dashboard'
@@ -87,6 +90,7 @@ export function Navbar({
             <span>Tổng quan</span>
           </button>
           <button
+            id="nav-create-tab"
             onClick={() => setActiveTab('create')}
             className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'create'
@@ -98,6 +102,7 @@ export function Navbar({
             <span>Tạo video</span>
           </button>
           <button
+            id="nav-videos-tab"
             onClick={() => setActiveTab('videos')}
             className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'videos'
@@ -109,6 +114,7 @@ export function Navbar({
             <span>Video của tôi</span>
           </button>
           <button
+            id="nav-settings-tab"
             onClick={() => setActiveTab('settings')}
             className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'settings'
@@ -122,12 +128,24 @@ export function Navbar({
         </nav>
 
         {/* Right User Actions & Status Badges */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2.5">
           {/* AI Ready Status Pill */}
-          <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-[#12B76A] dark:text-emerald-400 font-semibold shadow-sm">
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-[#12B76A] dark:text-emerald-400 font-semibold shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#12B76A] dark:bg-emerald-400 animate-pulse" />
             <span className="text-[11px]">AI Ready</span>
           </div>
+
+          {/* Quick Onboarding Tour Button */}
+          <button
+            id="nav-tour-btn"
+            onClick={onStartTour}
+            type="button"
+            title="Xem hướng dẫn từng bước"
+            className="px-3 py-1.5 rounded-xl bg-violet-50 dark:bg-violet-900/40 border border-violet-200 dark:border-violet-500/30 text-[#6D4AFF] dark:text-violet-300 hover:bg-[#6D4AFF] hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer shadow-sm"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
+            <span className="hidden sm:inline">Hướng dẫn</span>
+          </button>
 
           {/* Theme Switcher */}
           <button
@@ -144,34 +162,36 @@ export function Navbar({
           </button>
 
           {/* User Account Pill */}
-          {user ? (
-            <div className="flex items-center space-x-2.5 pl-1">
-              <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white dark:bg-[#161e31] border border-[#DDE3EE] dark:border-white/10">
-                <div className="w-6 h-6 rounded-full bg-[#6D4AFF] flex items-center justify-center text-white font-bold text-[11px] shadow-sm">
-                  {user.name.charAt(0).toUpperCase()}
+          <div id="nav-user-account" className="flex items-center">
+            {user ? (
+              <div className="flex items-center space-x-2.5 pl-1">
+                <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white dark:bg-[#161e31] border border-[#DDE3EE] dark:border-white/10">
+                  <div className="w-6 h-6 rounded-full bg-[#6D4AFF] flex items-center justify-center text-white font-bold text-[11px] shadow-sm">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="hidden lg:flex flex-col text-left leading-none pr-1">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-white">{user.name}</span>
+                    <span className="text-[10px] text-[#667085] dark:text-slate-400 mt-0.5">Gemini 2.5</span>
+                  </div>
                 </div>
-                <div className="hidden lg:flex flex-col text-left leading-none pr-1">
-                  <span className="text-xs font-semibold text-slate-900 dark:text-white">{user.name}</span>
-                  <span className="text-[10px] text-[#667085] dark:text-slate-400 mt-0.5">Gemini 2.5</span>
-                </div>
+                <button
+                  onClick={onLogout}
+                  title="Đăng xuất"
+                  className="p-1.5 rounded-lg text-[#8A94A6] hover:text-[#E5484D] hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
               </div>
+            ) : (
               <button
-                onClick={onLogout}
-                title="Đăng xuất"
-                className="p-1.5 rounded-lg text-[#8A94A6] hover:text-[#E5484D] hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
+                onClick={onOpenAuth}
+                className="px-4 py-1.5 rounded-xl text-xs font-semibold mockup-gradient-btn flex items-center gap-1.5 cursor-pointer shadow-md shadow-violet-500/25"
               >
-                <LogOut className="w-4 h-4" />
+                <UserIcon className="w-3.5 h-3.5" />
+                <span>Đăng nhập</span>
               </button>
-            </div>
-          ) : (
-            <button
-              onClick={onOpenAuth}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold mockup-gradient-btn flex items-center gap-1.5"
-            >
-              <UserIcon className="w-3.5 h-3.5" />
-              Đăng nhập
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>

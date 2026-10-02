@@ -114,6 +114,7 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
           </button>
 
           <button
+            id="settings-api-tab-btn"
             onClick={() => setActiveNav('ai')}
             className={`w-full p-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-colors text-left cursor-pointer ${
               activeNav === 'ai'
@@ -175,7 +176,7 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
         </div>
 
         {/* Right Main Settings Panel matching Mockup */}
-        <div className="md:col-span-3 studio-card p-6 sm:p-7 space-y-6 border border-[#DDE3EE] dark:border-white/10">
+        <div id="settings-api-card" className="md:col-span-3 studio-card p-6 sm:p-7 space-y-6 border border-[#DDE3EE] dark:border-white/10">
           {activeNav === 'system' ? (
             /* Tab: Hệ thống & Cập nhật code từ Git */
             <div className="space-y-6">

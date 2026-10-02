@@ -200,7 +200,7 @@ export function CreateVideoForm({ onSubmit, isLoading }: CreateVideoFormProps) {
       </div>
 
       {/* AI Toggle Bar matching Mockup */}
-      <div className="studio-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-[#DDE3EE] dark:border-white/10">
+      <div id="create-ai-toggle" className="studio-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-[#DDE3EE] dark:border-white/10">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-[#6D4AFF] dark:text-violet-400" />
@@ -274,7 +274,7 @@ export function CreateVideoForm({ onSubmit, isLoading }: CreateVideoFormProps) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Main Prompt Card matching Mockup */}
-        <div className="studio-card p-5 sm:p-6 space-y-3 border border-[#DDE3EE] dark:border-white/10">
+        <div id="create-prompt-card" className="studio-card p-5 sm:p-6 space-y-3 border border-[#DDE3EE] dark:border-white/10">
           <label className="block text-sm font-bold text-slate-900 dark:text-white">
             Bạn muốn tạo video về điều gì?
           </label>
@@ -495,7 +495,7 @@ export function CreateVideoForm({ onSubmit, isLoading }: CreateVideoFormProps) {
         </div>
 
         {/* Primary Controls: Thời lượng & Tỷ lệ khung hình matching Mockup */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div id="create-options-card" className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Thời lượng */}
           <div className="space-y-2">
             <label className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -681,6 +681,7 @@ export function CreateVideoForm({ onSubmit, isLoading }: CreateVideoFormProps) {
 
         {/* Large Full-Width Mockup CTA Button */}
         <button
+          id="create-submit-btn"
           type="submit"
           disabled={isLoading || (!prompt.trim() && !url.trim() && !richScript.trim())}
           className="w-full py-3.5 px-6 mockup-gradient-btn text-base flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-violet-600/30"

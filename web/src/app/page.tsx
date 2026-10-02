@@ -9,12 +9,27 @@ import { VideoProcessingModal } from '../components/VideoProcessingModal';
 import { VideoResultModal } from '../components/VideoResultModal';
 import { MyVideosGrid } from '../components/MyVideosGrid';
 import { SettingsView } from '../components/SettingsView';
+import { OnboardingTour, WelcomeTourModal } from '../components/OnboardingTour';
 import { api, User, VideoItem, CreateVideoInput, VideoStatusResponse } from '../lib/api';
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<'create' | 'videos' | 'dashboard' | 'settings'>('dashboard');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+
+  // Check if first-time visitor to prompt onboarding tour
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const completed = localStorage.getItem('studio_onboarding_completed');
+    if (!completed) {
+      const timer = setTimeout(() => {
+        setWelcomeOpen(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Video creation & modals state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -163,6 +178,7 @@ export default function Home() {
         }}
         onOpenAuth={() => setAuthModalOpen(true)}
         onLogout={handleLogout}
+        onStartTour={() => setTourOpen(true)}
       />
 
       {/* Main Content Areas */}
@@ -245,6 +261,34 @@ export default function Home() {
           onReviseVideo={handleReviseVideo}
         />
       )}
+
+      {/* Onboarding Interactive Tour */}
+      <OnboardingTour
+        isOpen={tourOpen}
+        onClose={() => setTourOpen(false)}
+        activeTab={activeTab}
+        onNavigateTab={(tab) => {
+          if (tab === 'create') {
+            handleNavigateCreate();
+          } else {
+            setActiveTab(tab);
+          }
+        }}
+        onOpenAuth={() => setAuthModalOpen(true)}
+      />
+
+      {/* First-time Welcome Prompt Modal */}
+      <WelcomeTourModal
+        isOpen={welcomeOpen}
+        onStartTour={() => {
+          setWelcomeOpen(false);
+          setTourOpen(true);
+        }}
+        onDismiss={() => {
+          setWelcomeOpen(false);
+          localStorage.setItem('studio_onboarding_completed', 'true');
+        }}
+      />
     </div>
   );
 }
