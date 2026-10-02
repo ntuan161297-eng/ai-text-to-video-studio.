@@ -11,10 +11,11 @@
  *   7. Post-Render Frame QA: extracts actual rendered frames, generates contact sheets, audits frame quality.
  */
 
+import os from 'os';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import { execFile, execSync } from 'child_process';
+import { execFile, execSync, spawn } from 'child_process';
 import { promisify } from 'util';
 import { InputUnderstandingEngine } from '../brain/inputUnderstandingEngine.js';
 import { UniversalIntentEngine } from '../brain/universalIntentEngine.js';
@@ -1279,17 +1280,33 @@ export class MasterVideoEngine {
 
     cleanupZombieHeadlessBrowsers();
 
-    const env = {
+    const totalMemGb = os.totalmem() / (1024 * 1024 * 1024);
+    const cpuCount = os.cpus().length || 2;
+    // Tự động phân bổ worker theo cấu hình máy:
+    // Máy RAM < 6GB hoặc 2 CPU -> 1 worker.
+    // Máy 4 core trở lên -> 2 workers. Máy 8 core trở lên -> 3 workers.
+    const workerCount = totalMemGb < 6 || cpuCount <= 2
+      ? 1
+      : Math.min(3, Math.max(2, Math.floor(cpuCount / 2)));
+
+    const totalEstimatedFrames = Math.max(300, Math.ceil(targetDuration * 30));
+    // Dynamic timeout: Cho phép ít nhất 3 giây/frame + 15 phút đệm (tối thiểu 25 phút) để không bao giờ bị timeout vô lý
+    const renderTimeoutMs = Math.max(1500000, totalEstimatedFrames * 3000);
+
+    const env: NodeJS.ProcessEnv = {
       ...process.env,
       PATH: `${path.dirname(ffmpegPath)};${path.dirname(nodeBin)};${process.env.PATH || ''}`,
       HYPERFRAMES_FFMPEG_PATH: ffmpegPath,
       HYPERFRAMES_FFPROBE_PATH: ffprobePath,
       PRODUCER_HEADLESS_SHELL_PATH: chromiumPath,
       HYPERFRAMES_SKIP_SKILLS: '1',
-      NODE_OPTIONS: '--max-old-space-size=2048',
-      PRODUCER_LOW_MEMORY_MODE: '1',
+      NODE_OPTIONS: '--max-old-space-size=4096',
       PUPPETEER_DISABLE_HEADLESS_WARNING: 'true',
     };
+
+    if (totalMemGb < 6) {
+      env.PRODUCER_LOW_MEMORY_MODE = '1';
+    }
 
     const renderArgs = [
       hyperframesMjs,
@@ -1297,17 +1314,80 @@ export class MasterVideoEngine {
       '-o',
       finalMp4Path,
       '-w',
-      '1', // Luôn ghim 1 worker để tiết kiệm tối đa CPU/RAM, ngăn chặn Chrome treo giật máy
-      '--low-memory-mode',
-      '--no-browser-gpu', // Tránh rò rỉ GPU tiến trình Chrome
-      '--protocol-timeout=600000',
+      String(workerCount),
+      `--protocol-timeout=${renderTimeoutMs}`,
     ];
 
+    if (totalMemGb < 6) {
+      renderArgs.push('--low-memory-mode', '--no-browser-gpu');
+    }
+
+    console.log(`[MasterVideoEngine] 🎬 Bắt đầu render HyperFrames: ${workerCount} worker(s), timeout: ${Math.round(renderTimeoutMs / 60000)} phút...`);
+
     try {
-      await execFileAsync(nodeBin, renderArgs, {
-        cwd: outputDir,
-        env,
-        timeout: 600000,
+      await new Promise<void>((resolve, reject) => {
+        const child = spawn(nodeBin, renderArgs, {
+          cwd: outputDir,
+          env,
+        });
+
+        let timeoutTimer: NodeJS.Timeout | null = setTimeout(() => {
+          try { child.kill('SIGKILL'); } catch {}
+          reject(new Error(`[Renderer] Quá trình kết xuất vượt quá giới hạn thời gian (${Math.round(renderTimeoutMs / 60000)} phút)`));
+        }, renderTimeoutMs);
+
+        let stdoutBuffer = '';
+        let stderrBuffer = '';
+
+        child.stdout?.on('data', (chunk) => {
+          const text = chunk.toString();
+          stdoutBuffer += text;
+
+          // Parse HyperFrames checkpoint JSON lines để cập nhật tiến trình liên tục lên UI
+          const lines = text.split('\n');
+          for (const line of lines) {
+            if (line.includes('framesCompleted') && line.includes('totalFrames')) {
+              try {
+                const jsonStart = line.indexOf('{');
+                const jsonEnd = line.lastIndexOf('}');
+                if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+                  const data = JSON.parse(line.slice(jsonStart, jsonEnd + 1));
+                  if (data.totalFrames && typeof data.framesCompleted === 'number') {
+                    const progressPercent = Math.min(94, Math.round(86 + (data.framesCompleted / data.totalFrames) * 8));
+                    const percentDone = Math.round((data.framesCompleted / data.totalFrames) * 100);
+                    onProgress?.(
+                      'rendering',
+                      progressPercent,
+                      `Đang dựng video: ${data.framesCompleted}/${data.totalFrames} khung hình (${percentDone}%)...`
+                    );
+                  }
+                }
+              } catch {}
+            }
+          }
+        });
+
+        child.stderr?.on('data', (chunk) => {
+          stderrBuffer += chunk.toString();
+        });
+
+        child.on('close', (code) => {
+          if (timeoutTimer) clearTimeout(timeoutTimer);
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(
+              new Error(
+                `[Renderer] HyperFrames thất bại với mã lỗi ${code}: ${stderrBuffer.slice(-500) || stdoutBuffer.slice(-500)}`
+              )
+            );
+          }
+        });
+
+        child.on('error', (err) => {
+          if (timeoutTimer) clearTimeout(timeoutTimer);
+          reject(err);
+        });
       });
     } finally {
       cleanupZombieHeadlessBrowsers();
