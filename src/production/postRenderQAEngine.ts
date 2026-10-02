@@ -8,6 +8,7 @@ import fs from 'fs';
 import { execFile } from 'child_process';
 import { promisify } from 'util';
 import { PostRenderQAReport } from '../types/productionEngine.js';
+import { AppPaths } from '../utils/appPaths.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -54,8 +55,7 @@ export class PostRenderQAEngine {
       errors.push(`Kích thước file video quá nhỏ (${stats.size} bytes), nghi ngờ video rỗng hoặc lỗi render`);
     }
 
-    const ffprobeBin = 'C:\\Users\\Admin\\bin\\ffprobe.exe';
-    const ffprobeCmd = fs.existsSync(ffprobeBin) ? ffprobeBin : 'ffprobe';
+    const ffprobeCmd = AppPaths.getFfprobePath();
 
     let actualDurationSec = expectedDurationSec;
     let actualWidth = expectedWidth;

@@ -376,6 +376,27 @@ export const api = {
     return await res.json();
   },
 
+  async getSystemDoctor(canary = false) {
+    const res = await fetch(`${API_BASE}/system/doctor?canary=${canary ? 'true' : 'false'}`);
+    return await res.json();
+  },
+
+  async runRenderCanary() {
+    const res = await fetch(`${API_BASE}/system/doctor/canary`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeader(),
+      },
+    });
+    return await res.json();
+  },
+
+  async checkSystemUpdates() {
+    const res = await fetch(`${API_BASE}/system/check-updates`);
+    return await res.json();
+  },
+
   async triggerSystemUpdate() {
     const res = await fetch(`${API_BASE}/system/update`, {
       method: 'POST',

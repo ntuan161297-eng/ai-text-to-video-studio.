@@ -1,49 +1,91 @@
 /**
  * SECRET STORE ABSTRACTION
  * Secure symmetric AES-256-GCM encryption for at-rest credentials storage.
- * Enforces server-side encryption keys, fail-secure validation, and key masking.
+ * Enforces server-side persistent master encryption key, fail-secure validation, and key masking.
  */
 
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import { AppPaths } from '../utils/appPaths.js';
 
 export class SecretStore {
   private static cachedKey: Buffer | null = null;
+  private static cachedLegacyKey: Buffer | null = null;
 
   /**
-   * Resolves and validates the 256-bit encryption key.
-   * If missing in production: Throws error (Fail-secure).
+   * Resolves and validates the persistent 256-bit encryption master key.
+   * Stored securely at USER_DATA_DIR/security/master.key
+   * Never overwritten on updates, never committed to git, never logged.
    */
   public static getMasterKey(): Buffer {
     if (this.cachedKey) {
       return this.cachedKey;
     }
 
-    const envKey = process.env.SECRET_STORE_KEY;
+    const keyPath = AppPaths.MASTER_KEY_PATH;
 
-    if (!envKey || envKey.trim().length === 0) {
-      // In development or if not configured, derive a stable deterministic 256-bit key from JWT_SECRET
-      const fallbackSeed = process.env.JWT_SECRET || 'antigravity-secure-video-master-encryption-seed-2026';
-      console.warn('[SecretStore] ⚠️ SECRET_STORE_KEY chưa đặt trong .env. Sử dụng server-derived key an toàn.');
-      this.cachedKey = crypto.createHash('sha256').update(fallbackSeed).digest();
-      return this.cachedKey;
+    try {
+      if (fs.existsSync(keyPath)) {
+        const keyHex = fs.readFileSync(keyPath, 'utf8').trim();
+        if (keyHex.length === 64 && /^[0-9a-fA-F]+$/.test(keyHex)) {
+          this.cachedKey = Buffer.from(keyHex, 'hex');
+          return this.cachedKey;
+        }
+      }
+    } catch (err: any) {
+      console.warn(`[SecretStore] Không thể đọc master.key hiện tại: ${err.message}. Đang tái tạo.`);
     }
 
-    const trimmed = envKey.trim();
-    // Accept either 64-character hex or 32-character raw string
-    if (trimmed.length === 64 && /^[0-9a-fA-F]+$/.test(trimmed)) {
-      this.cachedKey = Buffer.from(trimmed, 'hex');
-    } else if (trimmed.length === 32) {
-      this.cachedKey = Buffer.from(trimmed, 'utf-8');
-    } else {
-      // SHA-256 digest any arbitrary user secret to strictly guarantee 32 bytes (256 bits)
-      this.cachedKey = crypto.createHash('sha256').update(trimmed).digest();
+    // Ensure security directory exists
+    const secDir = path.dirname(keyPath);
+    if (!fs.existsSync(secDir)) {
+      fs.mkdirSync(secDir, { recursive: true });
     }
 
+    // Generate random 256-bit cryptographic key
+    const newKey = crypto.randomBytes(32);
+    try {
+      fs.writeFileSync(keyPath, newKey.toString('hex'), { encoding: 'utf8', mode: 0o600 });
+      console.log(`[SecretStore] 🔒 Đã khởi tạo persistent master encryption key tại: ${keyPath}`);
+    } catch (err: any) {
+      console.error(`[SecretStore] ❌ Lỗi khi ghi master.key: ${err.message}`);
+    }
+
+    this.cachedKey = newKey;
     return this.cachedKey;
   }
 
   /**
-   * Encrypts plaintext API key with AES-256-GCM
+   * Resolves legacy key (derived from SECRET_STORE_KEY or JWT_SECRET)
+   * used exclusively for migrating old credentials to the new persistent master key.
+   */
+  public static getLegacyMasterKey(): Buffer {
+    if (this.cachedLegacyKey) {
+      return this.cachedLegacyKey;
+    }
+
+    const envKey = process.env.SECRET_STORE_KEY;
+    if (!envKey || envKey.trim().length === 0) {
+      const fallbackSeed = process.env.JWT_SECRET || 'antigravity-secure-video-master-encryption-seed-2026';
+      this.cachedLegacyKey = crypto.createHash('sha256').update(fallbackSeed).digest();
+      return this.cachedLegacyKey;
+    }
+
+    const trimmed = envKey.trim();
+    if (trimmed.length === 64 && /^[0-9a-fA-F]+$/.test(trimmed)) {
+      this.cachedLegacyKey = Buffer.from(trimmed, 'hex');
+    } else if (trimmed.length === 32) {
+      this.cachedLegacyKey = Buffer.from(trimmed, 'utf-8');
+    } else {
+      this.cachedLegacyKey = crypto.createHash('sha256').update(trimmed).digest();
+    }
+
+    return this.cachedLegacyKey;
+  }
+
+  /**
+   * Encrypts plaintext API key with AES-256-GCM using persistent master key
    */
   public static encrypt(plainSecret: string): {
     encryptedKey: string;
@@ -71,6 +113,7 @@ export class SecretStore {
 
   /**
    * Decrypts ciphertext with AES-256-GCM
+   * If decryption fails with master key, seamlessly attempts legacy key for zero-downtime migration.
    */
   public static decrypt(payload: {
     encryptedKey: string;
@@ -82,19 +125,36 @@ export class SecretStore {
       throw new Error('SECRET_STORE_ERROR: Incomplete encrypted credential payload');
     }
 
-    const key = this.getMasterKey();
-    const decipher = crypto.createDecipheriv(
-      'aes-256-gcm',
-      key,
-      Buffer.from(iv, 'hex')
-    );
-
-    decipher.setAuthTag(Buffer.from(authTag, 'hex'));
-
-    let decrypted = decipher.update(encryptedKey, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-
-    return decrypted;
+    // Attempt 1: Decrypt with persistent master key
+    try {
+      const key = this.getMasterKey();
+      const decipher = crypto.createDecipheriv(
+        'aes-256-gcm',
+        key,
+        Buffer.from(iv, 'hex')
+      );
+      decipher.setAuthTag(Buffer.from(authTag, 'hex'));
+      let decrypted = decipher.update(encryptedKey, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      return decrypted;
+    } catch (err: any) {
+      // Attempt 2: Fallback to legacy key for existing installations
+      try {
+        const legacyKey = this.getLegacyMasterKey();
+        const decipher = crypto.createDecipheriv(
+          'aes-256-gcm',
+          legacyKey,
+          Buffer.from(iv, 'hex')
+        );
+        decipher.setAuthTag(Buffer.from(authTag, 'hex'));
+        let decrypted = decipher.update(encryptedKey, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
+        console.log('[SecretStore] ℹ️ Đã giải mã thành công credential từ legacy key.');
+        return decrypted;
+      } catch {
+        throw new Error('SECRET_STORE_ERROR: Failed to decrypt credential (authentication tag mismatch)');
+      }
+    }
   }
 
   /**

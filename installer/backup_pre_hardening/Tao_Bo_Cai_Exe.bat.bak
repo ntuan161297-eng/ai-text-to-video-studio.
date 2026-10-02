@@ -28,8 +28,8 @@ if not exist "%~dp0installer\runtime\node.exe" (
     echo [2/4] Dang chuan bi goi Node.js di dong (Runtime)...
     if exist "%LOCALAPPDATA%\Programs\nodejs" (
         xcopy /E /I /Y "%LOCALAPPDATA%\Programs\nodejs" "%~dp0installer\runtime" >nul
-    ) else if exist "%USERPROFILE%\nodejs" (
-        xcopy /E /I /Y "%USERPROFILE%\nodejs" "%~dp0installer\runtime" >nul
+    ) else if exist "C:\Users\Admin\nodejs" (
+        xcopy /E /I /Y "C:\Users\Admin\nodejs" "%~dp0installer\runtime" >nul
     ) else if exist "C:\Program Files\nodejs" (
         xcopy /E /I /Y "C:\Program Files\nodejs" "%~dp0installer\runtime" >nul
     )
@@ -45,9 +45,6 @@ if not exist "%~dp0web\.next\BUILD_ID" (
 ) else (
     echo [OK] Ban build Web Production da san sang.
 )
-
-:: Tao build_info.json tu dong
-node -e "const fs = require('fs'), { execSync } = require('child_process'); let commit = 'ae2e1ef', branch = 'main'; try { commit = execSync('git rev-parse --short HEAD').toString().trim(); branch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim(); } catch {} fs.writeFileSync('build_info.json', JSON.stringify({ appVersion: '1.0.0', buildNumber: String(Date.now()).slice(-6), gitCommit: commit, gitBranch: branch, buildTimestamp: new Date().toISOString() }, null, 2));"
 
 :: 4. Tien hanh dong goi file EXE
 echo.

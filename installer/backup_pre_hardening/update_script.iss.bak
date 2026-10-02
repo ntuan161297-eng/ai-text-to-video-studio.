@@ -34,11 +34,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "..\Khoi_Dong_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Tat_Studio.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Cap_Nhat_Tu_Git.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build_info.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release_manifest.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\package.json"; DestDir: "{app}"; Flags: ignoreversion
 
-; 2. Toan bo ma nguon Backend da sua loi va tai nguyen offline
+; 2. Toan bo ma nguon Backend da sua loi
 Source: "..\src\*"; DestDir: "{app}\src"; Excludes: "*.map"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; 3. Ban build Web moi nhat
@@ -46,9 +43,6 @@ Source: "..\web\.next\*"; DestDir: "{app}\web\.next"; Excludes: "cache\*"; Flags
 
 ; 4. Ma nguon web src
 Source: "..\web\src\*"; DestDir: "{app}\web\src"; Flags: ignoreversion recursesubdirs createallsubdirs
-
-; 5. Thu vien render HyperFrames da sua loi muxer Remotion
-Source: "..\node_modules\hyperframes\dist\*"; DestDir: "{app}\node_modules\hyperframes\dist"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Khởi động lại AI Studio ngay bây giờ"; Flags: postinstall shellexec skipifsilent nowait

@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "build": "1001",
+  "releaseDate": "2026-10-02T16:20:00.000Z",
+  "minimumCompatibleVersion": "1.0.0",
+  "downloadUrl": "https://github.com/ntuan161297-eng/ai-text-to-video-studio/releases/latest",
+  "sha256": "4e7c10b7a8d9f430291ba6ce00185fb4a1e9c9918233df0115e219ba3390cc5f",
+  "releaseNotes": "Bản phát hành chuẩn hóa Production v1.0.0: Native TTS WebSocket (Zero Python), Remotion Offline Render Pipeline, Centralized Data & Master Key Persistence, Full System Doctor Preflight."
+}

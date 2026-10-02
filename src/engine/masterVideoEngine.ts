@@ -52,6 +52,7 @@ import { ObservabilityLogger, StageArtifactsPayload } from '../production/observ
 import { generateHyperFramesHtml } from '../hyperframes/template.js';
 import { HyperScene, HyperVideoProject } from '../hyperframes/types.js';
 import { SVG_ICONS } from '../hyperframes/icons.js';
+import { AppPaths } from '../utils/appPaths.js';
 import { generateAmbientBgm } from '../utils/audioGenerator.js';
 import { downloadRealisticVisuals } from '../utils/realisticVisuals.js';
 import { generateContextualGraphicSvg } from '../utils/contextualGraphicGenerator.js';
@@ -1144,8 +1145,7 @@ export class MasterVideoEngine {
       }
 
     // Merge all beat audios into voice_master.wav (Zero Silent Padding!)
-    const ffmpegBin = 'C:\\Users\\Admin\\bin\\ffmpeg.exe';
-    const ffmpegCmd = fs.existsSync(ffmpegBin) ? ffmpegBin : 'ffmpeg';
+    const ffmpegCmd = AppPaths.getFfmpegPath();
     const normalizedAudioList: string[] = [];
     const safeJobId = jobId.replace(/[^a-zA-Z0-9_-]/g, '_');
 
@@ -1256,14 +1256,20 @@ export class MasterVideoEngine {
 
     // Execute HyperFrames renderer
     const finalMp4Path = path.resolve(finalVideoPath || path.join(outputDir, `video_${jobId}.mp4`));
-    const npxBin = 'C:\\Users\\Admin\\nodejs\\npx.cmd';
-    const npxCmd = fs.existsSync(npxBin) ? npxBin : 'npx';
+    const nodeBin = AppPaths.getNodePath();
+    const hyperframesMjs = AppPaths.getHyperFramesEntry();
+    const ffmpegPath = AppPaths.getFfmpegPath();
+    const ffprobePath = AppPaths.getFfprobePath();
+    const chromiumPath = AppPaths.getChromiumPath();
 
     cleanupZombieHeadlessBrowsers();
 
     const env = {
       ...process.env,
-      PATH: `C:\\Users\\Admin\\bin;C:\\Users\\Admin\\nodejs;${process.env.PATH || ''}`,
+      PATH: `${path.dirname(ffmpegPath)};${path.dirname(nodeBin)};${process.env.PATH || ''}`,
+      HYPERFRAMES_FFMPEG_PATH: ffmpegPath,
+      HYPERFRAMES_FFPROBE_PATH: ffprobePath,
+      PRODUCER_HEADLESS_SHELL_PATH: chromiumPath,
       HYPERFRAMES_SKIP_SKILLS: '1',
       NODE_OPTIONS: '--max-old-space-size=2048',
       PRODUCER_LOW_MEMORY_MODE: '1',
@@ -1271,7 +1277,7 @@ export class MasterVideoEngine {
     };
 
     const renderArgs = [
-      'hyperframes',
+      hyperframesMjs,
       'render',
       '-o',
       finalMp4Path,
@@ -1283,10 +1289,9 @@ export class MasterVideoEngine {
     ];
 
     try {
-      await execFileAsync(npxCmd, renderArgs, {
+      await execFileAsync(nodeBin, renderArgs, {
         cwd: outputDir,
         env,
-        shell: true,
         timeout: 600000,
       });
     } finally {

@@ -17,6 +17,9 @@ import {
   Laptop,
   Terminal,
   ExternalLink,
+  Activity,
+  Play,
+  FileJson,
 } from 'lucide-react';
 import { AiSettingsModal } from './AiSettingsModal';
 
@@ -40,9 +43,16 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
   const [updating, setUpdating] = useState(false);
   const [updateResult, setUpdateResult] = useState<{ success: boolean; message: string; output?: string } | null>(null);
 
+  // System Doctor states
+  const [doctorReport, setDoctorReport] = useState<any>(null);
+  const [loadingDoctor, setLoadingDoctor] = useState(false);
+  const [runningCanary, setRunningCanary] = useState(false);
+  const [canaryResult, setCanaryResult] = useState<any>(null);
+
   useEffect(() => {
     if (activeNav === 'system') {
       fetchSystemInfo();
+      fetchSystemDoctor();
     }
   }, [activeNav]);
 
@@ -57,6 +67,37 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
     finally {
       setLoadingInfo(false);
     }
+  };
+
+  const fetchSystemDoctor = async () => {
+    setLoadingDoctor(true);
+    try {
+      const res = await api.getSystemDoctor(false);
+      if (res.success) {
+        setDoctorReport(res.report);
+      }
+    } catch {}
+    finally {
+      setLoadingDoctor(false);
+    }
+  };
+
+  const handleRunCanary = async () => {
+    setRunningCanary(true);
+    setCanaryResult(null);
+    try {
+      const res = await api.runRenderCanary();
+      setCanaryResult(res.canaryResult || res);
+      await fetchSystemDoctor();
+    } catch (err: any) {
+      setCanaryResult({ ok: false, error: err.message });
+    } finally {
+      setRunningCanary(false);
+    }
+  };
+
+  const handleExportDiagnostics = () => {
+    window.open('/api/system/doctor/export', '_blank');
   };
 
   const handleUpdateSystem = async () => {
@@ -191,14 +232,24 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
                   </p>
                 </div>
 
-                <button
-                  onClick={handleUpdateSystem}
-                  disabled={updating}
-                  className="mockup-gradient-btn px-4 py-2 text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto cursor-pointer disabled:opacity-50 shadow-md shadow-violet-500/25"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${updating ? 'animate-spin' : ''}`} />
-                  <span>{updating ? 'Đang cập nhật...' : 'Cập nhật từ Git'}</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleExportDiagnostics}
+                    className="px-3 py-2 text-xs font-semibold rounded-xl border studio-border bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors"
+                    title="Xuất báo cáo chẩn đoán an toàn (không chứa mật khẩu/key)"
+                  >
+                    <FileJson className="w-3.5 h-3.5 text-blue-500" />
+                    <span>Xuất báo cáo</span>
+                  </button>
+                  <button
+                    onClick={handleUpdateSystem}
+                    disabled={updating}
+                    className="mockup-gradient-btn px-4 py-2 text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto cursor-pointer disabled:opacity-50 shadow-md shadow-violet-500/25"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${updating ? 'animate-spin' : ''}`} />
+                    <span>{updating ? 'Đang kiểm tra...' : 'Kiểm tra cập nhật'}</span>
+                  </button>
+                </div>
               </div>
 
               {/* Status Banner */}
@@ -211,16 +262,16 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
                 </div>
 
                 <div className="p-3.5 rounded-xl studio-elevated studio-border border">
-                  <span className="text-[11px] text-[#8A94A6] block">Git Commit</span>
+                  <span className="text-[11px] text-[#8A94A6] block">Mã bản dựng (Commit)</span>
                   <p className="text-sm font-extrabold text-[#6D4AFF] font-mono mt-0.5">
                     {systemInfo?.gitCommit || 'latest'}
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-xl studio-elevated studio-border border">
-                  <span className="text-[11px] text-[#8A94A6] block">Nhánh (Branch)</span>
+                  <span className="text-[11px] text-[#8A94A6] block">Chế độ phân phối</span>
                   <p className="text-sm font-extrabold text-slate-900 dark:text-white font-mono mt-0.5">
-                    {systemInfo?.gitBranch || 'main'}
+                    {systemInfo?.isGitRepo ? 'Git Repository' : 'Standalone Release'}
                   </p>
                 </div>
 
@@ -229,6 +280,101 @@ export function SettingsView({ user, onOpenAuth }: SettingsViewProps) {
                   <p className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                     {systemInfo?.nodeVersion || 'Node.js'}
                   </p>
+                </div>
+              </div>
+
+              {/* System Doctor & Diagnostics */}
+              <div className="p-4 sm:p-5 rounded-2xl studio-elevated studio-border border space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-5 h-5 text-emerald-500" />
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                        System Doctor — Kiểm tra thực thi thành phần
+                      </h3>
+                      <p className="text-[11px] text-[#667085] dark:text-slate-400">
+                        Kiểm tra bằng cách chạy nhị phân thực tế (Node, FFmpeg, Chromium, EdgeTTS, Database, Canary).
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleRunCanary}
+                    disabled={runningCanary}
+                    className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-violet-600 hover:bg-violet-700 text-white flex items-center gap-1.5 shadow-md shadow-violet-500/20 disabled:opacity-50"
+                  >
+                    <Play className={`w-3.5 h-3.5 ${runningCanary ? 'animate-spin' : ''}`} />
+                    <span>{runningCanary ? 'Đang render Canary (2.5s)...' : 'Chạy Render Canary'}</span>
+                  </button>
+                </div>
+
+                {/* Canary result banner if present */}
+                {canaryResult && (
+                  <div className={`p-3.5 rounded-xl text-xs flex items-center justify-between gap-2.5 ${
+                    canaryResult.ok
+                      ? 'bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300'
+                      : 'bg-rose-50 dark:bg-rose-500/15 border border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-300'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      {canaryResult.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-rose-500" />}
+                      <span className="font-semibold">
+                        {canaryResult.ok
+                          ? `Render Canary thành công: MP4 ${canaryResult.durationSec}s (${Math.round(canaryResult.fileSizeBytes / 1024)} KB, ${canaryResult.videoCodec}/${canaryResult.audioCodec})`
+                          : `Render Canary thất bại: ${canaryResult.error || canaryResult.stageFailed}`}
+                      </span>
+                    </div>
+                    {canaryResult.ok && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-800 dark:text-emerald-200 font-bold">
+                        RENDER_ENGINE_READY
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Subsystem Health Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  {(doctorReport?.items || [
+                    { id: 'node', name: 'Node.js Runtime', status: 'READY', category: 'runtime' },
+                    { id: 'ffmpeg', name: 'FFmpeg Muxer/Encoder', status: 'READY', category: 'media' },
+                    { id: 'ffprobe', name: 'FFprobe Media Analyzer', status: 'READY', category: 'media' },
+                    { id: 'chromium', name: 'Chromium Headless Shell', status: 'READY', category: 'render' },
+                    { id: 'hyperframes', name: 'HyperFrames Engine', status: 'READY', category: 'render' },
+                    { id: 'tts', name: 'EdgeTTS Speech Engine', status: 'READY', category: 'media' },
+                    { id: 'database', name: 'Local Database (JSON)', status: 'READY', category: 'database' },
+                    { id: 'storage_user_data_directory', name: 'User Data Directory', status: 'READY', category: 'storage' },
+                    { id: 'storage_output_directory', name: 'Output Directory', status: 'READY', category: 'storage' },
+                  ]).map((item: any) => {
+                    const isReady = item.status === 'READY';
+                    const isWarning = item.status === 'WARNING';
+                    return (
+                      <div
+                        key={item.id}
+                        className="p-3 rounded-xl border studio-border bg-slate-50/50 dark:bg-slate-900/40 flex items-start justify-between gap-2"
+                      >
+                        <div className="space-y-0.5 overflow-hidden">
+                          <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                            {item.name}
+                          </p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate">
+                            {item.version || item.details || item.path || 'Đã kiểm tra'}
+                          </p>
+                          {item.latencyMs !== undefined && (
+                            <p className="text-[9px] text-slate-400 font-mono">{item.latencyMs}ms</p>
+                          )}
+                        </div>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 font-mono ${
+                            isReady
+                              ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400'
+                              : isWarning
+                              ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400'
+                              : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400'
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 

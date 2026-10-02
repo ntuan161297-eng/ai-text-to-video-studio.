@@ -44,13 +44,11 @@ Source: "app_icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\tsconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build_info.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release_manifest.json"; DestDir: "{app}"; Flags: ignoreversion
 
 ; 2. Cau hinh moi truong sach (.env.example mac dinh)
 Source: "..\.env.example"; DestDir: "{app}"; Flags: ignoreversion
 
-; 3. Ma nguon Backend va Render Assets
+; 3. Ma nguon Backend
 Source: "..\src\*"; DestDir: "{app}\src"; Excludes: "*.map"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; 4. TTS runner script
@@ -59,21 +57,18 @@ Source: "..\scripts\tts_runner.py"; DestDir: "{app}\scripts"; Flags: ignoreversi
 ; 5. Giao dien Web (bo qua cache, trace, source maps de nhe hon va khoi dong nhanh)
 Source: "..\web\*"; DestDir: "{app}\web"; Excludes: ".next\cache\*,.next\trace*,.next\trace,*.log,*.map,*.ts.map,*.js.map,node_modules\.cache\*"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-; 6. Thu vien dependencies (Bao gom Remotion ffmpeg/ffprobe va Chromium headless shell)
+; 6. Thu vien dependencies
 Source: "..\node_modules\*"; DestDir: "{app}\node_modules"; Excludes: ".cache\*,*.map,*.ts.map,*.js.map,.remotion\chrome-headless-shell\win64\chrome-headless-shell-win64\locales\*,*.md,*.markdown"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; 7. Node.js Portable Runtime
 Source: "runtime\*"; DestDir: "{app}\runtime"; Excludes: "*.map,*.md,docs\*,test\*"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Dirs]
-; Du lieu nguoi dung tai LOCALAPPDATA - KHONG BAO GIO BI XOA KHI UPDATE/UNINSTALL
-Name: "{localappdata}\AI_Text_To_Video_Studio"; Flags: uninsneveruninstall; Permissions: users-full
-Name: "{localappdata}\AI_Text_To_Video_Studio\output"; Flags: uninsneveruninstall; Permissions: users-full
-Name: "{localappdata}\AI_Text_To_Video_Studio\temp"; Flags: uninsneveruninstall; Permissions: users-full
-Name: "{localappdata}\AI_Text_To_Video_Studio\security"; Flags: uninsneveruninstall; Permissions: users-full
-Name: "{localappdata}\AI_Text_To_Video_Studio\logs"; Flags: uninsneveruninstall; Permissions: users-full
+; Cac thu muc du lieu va video xuat
+Name: "{app}\data"; Permissions: users-full
 Name: "{app}\output"; Permissions: users-full
 Name: "{app}\temp"; Permissions: users-full
+Name: "{app}\review"; Permissions: users-full
 
 [Icons]
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\app_icon.ico"; Tasks: desktopicon

@@ -1,4 +1,20 @@
+import fs from 'fs';
+import path from 'path';
 import { HyperVideoProject } from './types.js';
+import { AppPaths } from '../utils/appPaths.js';
+
+let cachedGsapContent: string | null = null;
+function getBundledGsap(): string {
+  if (cachedGsapContent) return cachedGsapContent;
+  const assetPath = path.join(AppPaths.APP_ROOT, 'src', 'hyperframes', 'assets', 'gsap.min.js');
+  if (fs.existsSync(assetPath)) {
+    try {
+      cachedGsapContent = fs.readFileSync(assetPath, 'utf8');
+      return cachedGsapContent;
+    } catch {}
+  }
+  return '';
+}
 
 export function generateHyperFramesHtml(project: HyperVideoProject): string {
   const styleKey = (project.style || '').toLowerCase();
@@ -603,11 +619,11 @@ function escapeHtml(str: string): string {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=${project.width || 1080}, height=${project.height || 1920}" />
   <title>${project.title}</title>
-  <!-- Google Fonts Hỗ Trợ Tiếng Việt Chuẩn Xác -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700;800;900&family=Inter:wght@600;700;800;900&family=${selectedFont.family}&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <!-- GSAP Animation Library (Offline Bundled) -->
+  <script>
+    ${getBundledGsap() || '/* fallback cdn */'}
+  </script>
+  ${!getBundledGsap() ? '<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>' : ''}
   <style>
     * {
       margin: 0;

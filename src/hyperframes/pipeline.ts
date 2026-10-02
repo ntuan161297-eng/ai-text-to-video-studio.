@@ -7,6 +7,7 @@ import { generateAmbientBgm } from '../utils/audioGenerator.js';
 import { HyperScene, HyperVideoProject } from './types.js';
 import { SVG_ICONS } from './icons.js';
 import { generateHyperFramesHtml } from './template.js';
+import { AppPaths } from '../utils/appPaths.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -21,14 +22,20 @@ export interface HyperPipelineOptions {
 export class HyperFramesVideoPipeline {
   private outputDir: string;
   private tempDir: string;
-  private npxPath: string;
+  private nodePath: string;
+  private hyperframesMjs: string;
   private ffmpegPath: string;
+  private ffprobePath: string;
+  private chromiumPath: string;
 
   constructor() {
-    this.outputDir = path.resolve(process.env.OUTPUT_DIR || './output');
-    this.tempDir = path.resolve(process.env.TEMP_DIR || './temp');
-    this.npxPath = 'C:\\Users\\Admin\\nodejs\\npx.cmd';
-    this.ffmpegPath = 'C:\\Users\\Admin\\bin\\ffmpeg.exe';
+    this.outputDir = AppPaths.USER_OUTPUT_DIR;
+    this.tempDir = AppPaths.USER_TEMP_DIR;
+    this.nodePath = AppPaths.getNodePath();
+    this.hyperframesMjs = AppPaths.getHyperFramesEntry();
+    this.ffmpegPath = AppPaths.getFfmpegPath();
+    this.ffprobePath = AppPaths.getFfprobePath();
+    this.chromiumPath = AppPaths.getChromiumPath();
 
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir, { recursive: true });
@@ -274,13 +281,19 @@ export class HyperFramesVideoPipeline {
 
     const env = {
       ...process.env,
-      PATH: `C:\\Users\\Admin\\bin;C:\\Users\\Admin\\nodejs;${process.env.PATH || ''}`,
+      PATH: `${path.dirname(this.ffmpegPath)};${path.dirname(this.nodePath)};${process.env.PATH || ''}`,
+      HYPERFRAMES_FFMPEG_PATH: this.ffmpegPath,
+      HYPERFRAMES_FFPROBE_PATH: this.ffprobePath,
+      PRODUCER_HEADLESS_SHELL_PATH: this.chromiumPath,
       HYPERFRAMES_SKIP_SKILLS: '1',
+      NODE_OPTIONS: '--max-old-space-size=2048',
+      PRODUCER_LOW_MEMORY_MODE: '1',
+      PUPPETEER_DISABLE_HEADLESS_WARNING: 'true',
     };
 
     try {
       const renderArgs = [
-        'hyperframes',
+        this.hyperframesMjs,
         'render',
         '-o',
         finalOutputPath,
@@ -290,10 +303,9 @@ export class HyperFramesVideoPipeline {
         '--no-browser-gpu',
       ];
       
-      const child = await execFileAsync(this.npxPath, renderArgs, {
+      const child = await execFileAsync(this.nodePath, renderArgs, {
         cwd: sessionDir,
         env,
-        shell: true,
         timeout: 300000,
       });
 

@@ -9,6 +9,7 @@ import { StorageFactory } from '../storage/storageFactory.js';
 import { generateVideo } from '../services/videoGenerator.js';
 import { VideoJobPayload, VIDEO_QUEUE_NAME, getLocalQueueInstance } from '../queue/videoQueue.js';
 import { VideoStatus } from '../types/video.js';
+import { AppPaths } from '../utils/appPaths.js';
 
 /**
  * Chuyển tiêu đề tiếng Việt thành slug an toàn cho tên file video xuất ra
@@ -42,8 +43,7 @@ export function slugifyVideoTitle(title?: string | null, fallback: string = 'vid
  * Trích xuất ảnh đại diện (Thumbnail / Poster) từ video đã render
  */
 async function extractThumbnail(videoPath: string, outputPath: string): Promise<boolean> {
-  const ffmpegBin = 'C:\\Users\\Admin\\bin\\ffmpeg.exe';
-  const ffmpegCmd = fs.existsSync(ffmpegBin) ? ffmpegBin : 'ffmpeg';
+  const ffmpegCmd = AppPaths.getFfmpegPath();
 
   return new Promise((resolve) => {
     // Trích xuất khung hình tại giây 1.5 của video với chất lượng cao

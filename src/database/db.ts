@@ -4,6 +4,8 @@ import pg from 'pg';
 import { User, VideoRecord, VideoJobRecord, VideoStatus, AspectRatio, VideoEngine } from '../types/video.js';
 import { VideoVersionRecord } from '../types/jobContext.js';
 import { EncryptedCredentialRecord, AdminAIConfig } from '../ai/types.js';
+import { AppPaths } from '../utils/appPaths.js';
+import { SecretStore } from '../ai/secretStore.js';
 
 export const DEFAULT_ADMIN_CONFIG: AdminAIConfig = {
   aiEnabled: true,
@@ -484,6 +486,7 @@ export class PostgresDatabaseService implements IDatabaseService {
 export class LocalJsonDatabaseService implements IDatabaseService {
   private filePath: string;
   private data: {
+    schemaVersion?: number;
     users: User[];
     videos: VideoRecord[];
     video_jobs: VideoJobRecord[];
@@ -493,11 +496,12 @@ export class LocalJsonDatabaseService implements IDatabaseService {
   };
 
   constructor(dbPath?: string) {
-    this.filePath = path.resolve(dbPath || './data/local_db.json');
+    this.filePath = dbPath ? path.resolve(dbPath) : AppPaths.DATABASE_PATH;
     this.data = { users: [], videos: [], video_jobs: [], video_versions: [], ai_credentials: [] };
   }
 
   async init(): Promise<void> {
+    AppPaths.migrateLegacyUserData();
     const dir = path.dirname(this.filePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -510,11 +514,55 @@ export class LocalJsonDatabaseService implements IDatabaseService {
         if (!this.data.ai_credentials) this.data.ai_credentials = [];
         if (!this.data.ai_settings) this.data.ai_settings = { ...DEFAULT_ADMIN_CONFIG };
       } catch {
-        this.data = { users: [], videos: [], video_jobs: [], video_versions: [], ai_credentials: [], ai_settings: { ...DEFAULT_ADMIN_CONFIG } };
+        this.data = { users: [], videos: [], video_jobs: [], video_versions: [], ai_credentials: [], ai_settings: { ...DEFAULT_ADMIN_CONFIG }, schemaVersion: 2 };
       }
     } else {
+      this.data.schemaVersion = 2;
       this.data.ai_settings = { ...DEFAULT_ADMIN_CONFIG };
       this.save();
+    }
+
+    await this.runSchemaMigration();
+  }
+
+  private async runSchemaMigration(): Promise<void> {
+    const CURRENT_SCHEMA_VERSION = 2;
+    const currentVersion = this.data.schemaVersion || 1;
+
+    if (currentVersion < CURRENT_SCHEMA_VERSION) {
+      console.log(`[Database] 🔄 Phát hiện schema version ${currentVersion}. Đang nâng cấp lên v${CURRENT_SCHEMA_VERSION}...`);
+      try {
+        const backupPath = `${this.filePath}.v${currentVersion}_bak_${Date.now()}`;
+        fs.writeFileSync(backupPath, JSON.stringify(this.data, null, 2), 'utf-8');
+        console.log(`[Database] 💾 Đã sao lưu database trước khi nâng cấp tại: ${backupPath}`);
+      } catch (err: any) {
+        console.warn(`[Database] Không thể tạo backup: ${err.message}`);
+      }
+
+      if (this.data.ai_credentials && this.data.ai_credentials.length > 0) {
+        let migratedCount = 0;
+        for (const cred of this.data.ai_credentials) {
+          try {
+            const rawKey = SecretStore.decrypt({
+              encryptedKey: cred.encryptedKey,
+              iv: cred.iv,
+              authTag: cred.authTag,
+            });
+            const reEncrypted = SecretStore.encrypt(rawKey);
+            cred.encryptedKey = reEncrypted.encryptedKey;
+            cred.iv = reEncrypted.iv;
+            cred.authTag = reEncrypted.authTag;
+            migratedCount++;
+          } catch (migErr: any) {
+            console.warn(`[Database] Bỏ qua credential ${cred.id} trong migration: ${migErr.message}`);
+          }
+        }
+        console.log(`[Database] 🔑 Đã đồng bộ mã hóa cho ${migratedCount} credentials với master key.`);
+      }
+
+      this.data.schemaVersion = CURRENT_SCHEMA_VERSION;
+      this.save();
+      console.log(`[Database] ✅ Nâng cấp schema lên v${CURRENT_SCHEMA_VERSION} hoàn tất!`);
     }
   }
 
@@ -864,7 +912,7 @@ export async function getDatabase(): Promise<IDatabaseService> {
     }
   }
 
-  console.log('💾 Khởi động Local Database (data/local_db.json)...');
+  console.log(`💾 Khởi động Local Database (${AppPaths.DATABASE_PATH})...`);
   const localDb = new LocalJsonDatabaseService();
   await localDb.init();
   dbInstance = localDb;

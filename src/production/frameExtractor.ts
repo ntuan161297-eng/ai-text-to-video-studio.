@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { execFile } from 'child_process';
 import { promisify } from 'util';
+import { AppPaths } from '../utils/appPaths.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -30,8 +31,7 @@ export class FrameExtractor {
       fs.mkdirSync(outputFramesDir, { recursive: true });
     }
 
-    const ffmpegBin = 'C:\\Users\\Admin\\bin\\ffmpeg.exe';
-    const ffmpegCmd = fs.existsSync(ffmpegBin) ? ffmpegBin : 'ffmpeg';
+    const ffmpegCmd = AppPaths.getFfmpegPath();
 
     const outputPattern = path.join(outputFramesDir, 'frame_%03d.jpg');
 
